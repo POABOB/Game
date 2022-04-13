@@ -221,20 +221,20 @@ class frontController extends \core\PPP {
                   "comment": "詳細備註",
                   "judger_id": 1,
                   "scores": [
-                    {"score_id": 1,"score": 8.5,"judger_id": 1,"name": "王裁判"},
-                    {"score_id": 2,"score": 1.5,"judger_id": 2,"name": "陳裁判"}}
+                    {"score_id": 1,"score": 8.5,"round": "1"},
+                    {"score_id": 2,"score": 1.5,"round": "2"}
                   ]
                 },
                 {
-                    "player_id": 2,
-                    "name": "陳小明",
-                    "unit": "國立台中二中",
-                    "comment": "詳細備註",
-                    "judger_id": 1,
-                    "scores": [
-                      {"score_id": 3,"score": 9.5,"judger_id": 1,"name": "王裁判"},
-                      {"score_id": 4,"score": 5.5,"judger_id": 2,"name": "陳裁判"}
-                    ]
+                  "player_id": 2,
+                  "name": "陳小明",
+                  "unit": "國立台中二中",
+                  "comment": "詳細備註",
+                  "judger_id": 1,
+                  "scores": [
+                    {"score_id": 3,"score": 9.5,"round": "1"},
+                    {"score_id": 4,"score": 5.5,"round": "2"}
+                  ]
                 }
               ]
             }
@@ -344,20 +344,20 @@ class frontController extends \core\PPP {
                   "comment": "詳細備註",
                   "round": "1",
                   "scores": [
-                    {"score_id": 1,"score": 8.5,"round": "1"},
-                    {"score_id": 2,"score": 1.5,"round": "2"}
+                    {"score_id": 1,"score": 8.5,"judger_id": 1,"name": "王裁判"},
+                    {"score_id": 2,"score": 1.5,"judger_id": 2,"name": "陳裁判"}
                   ]
                 },
                 {
-                    "player_id": 2,
-                    "name": "陳小明",
-                    "unit": "國立台中二中",
-                    "comment": "詳細備註",
-                    "round": "1",
-                    "scores": [
-                      {"score_id": 3,"score": 9.5,"judger_id": 1,"name": "王裁判"},
-                      {"score_id": 4,"score": 5.5,"round": "2"}
-                    ]
+                  "player_id": 2,
+                  "name": "陳小明",
+                  "unit": "國立台中二中",
+                  "comment": "詳細備註",
+                  "round": "1",
+                  "scores": [
+                    {"score_id": 3,"score": 9.5,"judger_id": 1,"name": "王裁判"},
+                    {"score_id": 4,"score": 5.5,"judger_id": 2,"name": "陳裁判"}
+                  ]
                 }
               ]
             }
