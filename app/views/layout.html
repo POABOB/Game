@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>峻 設計 Chun Design - {% block title %}{% endblock %}</title>
+
+    {% block style %}
+    {% endblock %}
+
+</head>
+<body>
+    <nav id='nav'>
+        <div class="container-fluid">
+            <div class="content_">
+                <!-- LOGO -->
+                <a href="{{ '/'|base_url }}" class="logo">
+                    <img class='logo_image' src="{{ '/img/layout/logo.png'|site_url }}" alt="logo">
+                    <img class='logo_text' src="{{ '/img/layout/logo_text.png'|site_url }}" alt="logo">
+                </a>
+                
+
+                <!-- PC 清單+icon -->
+                <div class="pc_right"> 
+                    <!-- 選單 -->
+                    <div class="items">
+                        <ul>
+                            <!-- <li><a class='pc_item' href="./index.html">
+                                <span class='en'>Chun Design</span>
+                                <span class='tw'>&ensp;峻&emsp;設計</span>
+                            </a></li> -->
+
+                            <li><a class='pc_item' href="{{ '/projects'|base_url }}">
+                                <span class='en'>Projects</span>
+                                <span class='tw'>空間設計</span>
+                            </a></li>
+
+                            <li><a class='pc_item' href="{{ '/aboutus'|base_url }}">
+                                <span class='en'>About </span>
+                                <span class='tw'>關於我們</span>
+                            </a></li>
+
+                            <li><a class='pc_item' href="{{ '/service'|base_url }}">
+                                <span class='en'>Service</span>
+                                <span class='tw'>服務流程</span>
+                            </a></li>
+
+                            <li><a class='pc_item' href="{{ '/contactus'|base_url }}">
+                                <span class='en'>Contact</span>
+                                <span class='tw'>我要聯繫</span>
+                            </a></li>
+
+                            
+                            
+                        </ul>
+                    </div>
+
+                    <div class="icons">
+                        <a target="_blank" href="https://www.facebook.com/chunspacedesign">
+                            <img src="{{ '/img/layout/fb_icon.png'|site_url }}" alt="fb">
+                        </a>
+
+                        <a target="_blank" href="https://www.instagram.com/chunspacedesign/?fbclid=IwAR0iljKCt18wqEI2kocp8ZsH7S5CFi8ZyJFd-z4BCQiGoCpsgP4OwBo84TY">
+                            <img src="{{ '/img/layout/ig_icon.png'|site_url }}" alt="ig">
+                        </a>
+
+                    </div>
+                </div>
+
+                <!-- 漢堡條 -->
+                <div class="burger">
+                    <div class="line1 line_"></div>
+                    <div class="line2 line_"></div>
+                    <div class="line3 line_"></div>
+                </div>
+
+                <!-- 手機 清單+icon -->
+                <div class="mobile_right">
+                    <ul>
+                        <li><a href="{{ '/'|base_url }}">Chun Design</a></li>
+                        <li><a href="{{ '/projects'|base_url }}">Projects</a></li>
+                        <li><a href="{{ '/aboutus'|base_url }}">About</a></li>
+                        <li><a href="{{ '/service'|base_url }}">Service</a></li>
+                        <li><a href="{{ '/contactus'|base_url }}">Contact</a></li>
+                        <li class='icon_'>
+                            <a target="_blank" href="https://www.facebook.com/chunspacedesign">
+                                <img src="{{ '/img/layout/fb_icon.png'|site_url }}" alt="fb">
+                            </a>
+    
+                            <a target="_blank" href="https://www.instagram.com/chunspacedesign/?fbclid=IwAR0iljKCt18wqEI2kocp8ZsH7S5CFi8ZyJFd-z4BCQiGoCpsgP4OwBo84TY">
+                                <img src="{{ '/img/layout/ig_icon.png'|site_url }}" alt="ig">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="main">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    {% block footer %}
+    {% endblock %}
+
+    {% block script %}
+    {% endblock %}
+    
+</body>
+</html>

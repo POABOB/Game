@@ -1,0 +1,244 @@
+{% extends "layout.html" %}
+{% block title %}聯絡我們{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ '/style/layout.css'|site_url }}">
+<link rel="stylesheet" href="{{ '/style/style_contact.css'|site_url }}">
+
+
+<!-- bootstrapcdn -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<!-- animate.css -->
+<link rel="stylesheet" href="{{ '/css/animate.css'|site_url }}">
+<!-- fullpage -->
+<link rel="stylesheet" href="{{ '/css/fullpage.css'|site_url }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="article">
+        <p class='title'><strong>聯絡我們 - Contact Us</strong></p>
+
+        <div class="content">
+            {% for d in data %}
+                <p>
+                    {{ d.department|e }}<br>
+                    電 話 Tel:{{ d.tel|e }}<br>
+                    傳 真 Tax:{{ d.tax|e }}<br>
+                    地 址 <a href="{{ d.addr_map|e }}" target="__blank">{{ d.addr|e }}</a><br>
+                    <br>
+                    信 箱 {{ d.email|e }}<br>
+                    統 編 Tax ID:{{ d.tax_id|e }}<br>
+                </p>
+                <div class="line"></div>
+            {% endfor %}
+            
+
+            
+        </div>
+        
+        <!-- <div class="line"></div> -->
+
+        <form id="contact-form">
+            <div class="flex">
+                <label for="name">客戶名稱 *</label>
+                <div class="under_line">
+                    <input name='name' type="text" required maxlength="64">
+                </div>
+                
+            </div>
+            
+
+            <div class='flex'>
+                <label for="gender">性&emsp;&emsp;別</label>
+                <div class='under_line'>
+                    <input name='gender' type="radio" value="1" checked required maxlength="1">男
+                    <input name='gender' type="radio" value="0" required maxlength="1">女
+                </div>
+            </div>
+
+            <div class="flex">
+                <label for="phone">電&emsp;&emsp;話</label>
+                <div class="under_line">
+                    <input name='phone' type="text" maxlength="20">
+                </div>
+                 
+            </div>
+
+            <div class="flex">
+                <label for="cellphone">手&emsp;&emsp;機 *</label>
+                <div class="under_line">
+                    <input name='cellphone' type="text" required maxlength="15">
+                </div>
+                 
+            </div>
+
+            <div class="flex">
+                <label for="email">電子郵件 *</label>
+                <div class="under_line">
+                    <input name='email' type="text" required maxlength="128">
+                </div>
+                 
+            </div>
+
+            <div class="flex">
+                <label for="location">施工地點 *</label>
+                <div class="under_line">
+                    <input name='location' type="text" required maxlength="256">
+                </div>
+                 
+            </div>
+
+            <div class="flex">
+                <label for="type">設計性質 *</label>
+                <div class="under_line">
+                    <input name='type' type="text" required maxlength="128">
+                </div>
+                 
+            </div>
+
+            <div class="flex">
+                <label for="size">室內坪數 *</label>
+                <div class="under_line">
+                    <input name='size' type="text" required maxlength="10">
+                </div>
+                 
+            </div>
+
+            <div class="flex">
+                <label for="budget">預&emsp;&emsp;算 *</label>
+                <div class="under_line">
+                    <input name='budget' type="text" required maxlength="15">
+                </div>
+                 
+            </div>
+
+            <div class="flex">
+                <label for="time">入住時間</label>
+                <div class="under_line">
+                    <input name='time' type="text"  placeholder="年 / 月" maxlength="10">
+                </div>
+                 
+            </div>
+
+            <div class="flex">
+                <label for="desc">需求描述</label>
+                <div class="under_line">
+                    <input name='desc' type="text" maxlength="256">
+                </div>
+            </div>
+
+            <p>
+                
+                <!-- <input type="submit" value=""> -->
+                <button class="submit-btn">
+                    <div class="spinner-border" style="width: 1.5rem; height: 1.5rem; display: none;" role="status">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    送 出 資 料
+                </button>
+            </p>
+
+        </form>
+
+    </div>
+</div>
+{% endblock %}
+{% block footer %}
+<footer id="footer">
+    <p>Copyright©2021 leyan company 保留一切權利。 <br>
+    禁止任何網際網路服務業者轉錄其網路資訊知內容供人點閱。 但以網路搜尋或超連結方式，進入醫療機構知網址(域)直接點閱者，不在此限。網頁相容性建議使用Chrome瀏覽器閱覽。
+    </p>
+</footer>
+{% endblock %}
+{% block script %}
+<!-- bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+crossorigin="anonymous"></script>
+
+<!-- fullpage -->
+<script src="{{ '/js/fullpage.js'|site_url }}"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<!-- js掛載 -->
+<script src="{{ '/js/index.js'|site_url }}"></script>
+
+<!-- 表單驗證&聯絡我們API -->
+<script>
+const serializeArrayToJSON = function (form) {
+	var arr = [];
+	Array.prototype.slice.call(form.elements).forEach(function (field) {
+		if (!field.name || field.disabled || ['file', 'reset', 'submit', 'button'].indexOf(field.type) > -1) return;
+		if (field.type === 'select-multiple') {
+			Array.prototype.slice.call(field.options).forEach(function (option) {
+				if (!option.selected) return;
+				arr.push({
+					name: field.name,
+					value: option.value
+				});
+			});
+			return;
+		}
+		if (['checkbox', 'radio'].indexOf(field.type) >-1 && !field.checked) return;
+		arr.push({
+			name: field.name,
+			value: field.value
+		});
+	});
+
+    const values = {}
+    for(index in arr) {
+        values[arr[index].name] = arr[index].value;
+    }
+    return JSON.stringify(values);
+};
+
+
+const contactForm = document.getElementById('contact-form');
+// Adds a listener for the "submit" event.
+contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if(contactForm.checkValidity()) {
+        if(confirm('是否要提交該表單?')) {
+            document.querySelector('.submit-btn').disabled = true;
+            document.querySelector('.spinner-border').style.display = 'inline-block';
+            fetch("{{ '/api/email/send'|base_url }}", {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: serializeArrayToJSON(contactForm),
+            })
+            .then(response => response.json())
+            .then(res => {
+                if(res.code === 200) {
+                    alert(res.message);
+                    contactForm.reset();
+                } else {
+                    alert(res.message);
+                }
+                
+                document.querySelector('.submit-btn').disabled = false;
+                document.querySelector('.spinner-border').style.display = 'none';
+            })
+            .catch((error) => {
+                alert(error);
+                document.querySelector('.submit-btn').disabled = false;
+                document.querySelector('.spinner-border').style.display = 'none';
+            });
+        }
+    } else {
+        contactForm.reportValidity();
+    }
+});
+</script>
+
+{% endblock %}

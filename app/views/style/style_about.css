@@ -1,0 +1,90 @@
+#main {
+  padding-top: 190px;
+}
+
+#main .article .title {
+  font-size: 29px;
+  letter-spacing: 0.105em;
+}
+
+@media (max-width: 440px) {
+  #main .article .title {
+    text-align: center;
+  }
+}
+
+#main .article .content .p_ {
+  letter-spacing: 0.105em;
+  font-size: 18px;
+  color: #696363;
+}
+
+@media (max-width: 440px) {
+  #main .article .content .p_ {
+    font-size: 16px;
+  }
+}
+
+#main .team {
+  margin-top: 150px;
+  margin-bottom: 200px;
+}
+
+#main .team .title {
+  font-size: 29px;
+  letter-spacing: 0.105em;
+}
+
+@media (max-width: 440px) {
+  #main .team .title {
+    text-align: center;
+  }
+}
+
+#main .team .team_items .item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#main .team .team_items .item img {
+  width: 90px;
+  display: none;
+}
+
+#main .team .team_items .item span {
+  letter-spacing: 0.105em;
+  font-size: 18px;
+  color: #696363;
+  margin-left: 20px;
+}
+
+@media (max-width: 440px) {
+  #main .team .team_items .item span {
+    font-size: 16px;
+  }
+}
+
+#main .team .team_items .item .line {
+  display: inline-block;
+  width: 2px;
+  height: 20px;
+  background-color: #696363;
+  opacity: 0.5;
+  margin: 0 30px;
+}
+
+footer#footer {
+  position: unset;
+  background-color: white;
+}
+
+footer#footer p {
+  color: #171514;
+  padding: 10px 0 10px 0;
+}

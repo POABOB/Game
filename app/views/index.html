@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block title %}首頁{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{{ '/style/layout.css'|site_url }}">
+<link rel="stylesheet" href="{{ '/style/style_index.css'|site_url }}">
+
+
+<!-- bootstrapcdn -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+    integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+<!-- animate.css -->
+<link rel="stylesheet" href="{{ '/css/animate.css'|site_url }}">
+<!-- fullpage -->
+<link rel="stylesheet" href="{{ '/css/fullpage.css'|site_url }}">
+{% endblock %}
+
+{% block content %}
+<div id="fullpage">
+    {% for d in data %}
+    <div class="section">
+        <div class="slider-item-wrapper">
+            {% if d.img2|length < 5 %}
+            <img {% if d.small_img|length > 5 %}class="pc"{% endif %}  src="{{ ('/store'~ d.img)|site_url }}" alt="">
+                {% if d.small_img|length > 5 %}
+                <img class="mobile"  src="{{ ('/store'~ d.small_img)|site_url }}" alt="">
+                {% endif %}
+            {% else %}
+            <div class="left">
+                <img  src="{{ ('/store'~ d.img)|site_url }}" alt="">
+            </div>
+            <div class="right">
+                <img  src="{{ ('/store'~ d.img2)|site_url }}" alt="">
+            </div>
+            {% endif %}
+            <!-- <div class="mask_"></div> -->
+            {% if loop.last %}
+            <div class='footer'>
+                <p>Copyright©2021 leyan company 保留一切權利。 <br>
+                禁止任何網際網路服務業者轉錄其網路資訊知內容供人點閱。 但以網路搜尋或超連結方式，進入醫療機構知網址(域)直接點閱者，不在此限。網頁相容性建議使用Chrome瀏覽器閱覽。
+                </p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    
+</div>
+{% endblock %}
+{% block footer %}
+{% endblock %}
+{% block script %}
+<!-- bootstrap -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
+integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut"
+crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"
+integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k"
+crossorigin="anonymous"></script>
+
+<!-- fullpage -->
+<script src="{{ '/js/fullpage.js'|site_url }}"></script>
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"
+integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
+
+<!-- js掛載 -->
+<script src="{{ '/js/index.js'|site_url }}"></script>
+{% endblock %}

@@ -1,0 +1,54 @@
+#main {
+  padding-top: 70px;
+}
+
+#main .content_ a:hover img {
+  opacity: 0.8;
+}
+
+#main .content_ a .item {
+  height: calc(50vh - 35px);
+  position: relative;
+  background-color: black;
+}
+
+#main .content_ a .item:nth-of-type(1) {
+  margin-bottom: 15px;
+}
+
+#main .content_ a .item img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: center;
+     object-position: center;
+  -webkit-transition: 0.1s ease-in-out;
+  -o-transition: 0.1s ease-in-out;
+  transition: 0.1s ease-in-out;
+}
+
+#main .content_ a .item .item_text {
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-size: 30px;
+  letter-spacing: .3rem;
+}
+
+footer#footer {
+  position: unset;
+  background-color: white;
+}
+
+footer#footer p {
+  color: #171514;
+  padding: 10px 0 10px 0;
+}

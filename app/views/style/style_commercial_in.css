@@ -1,0 +1,43 @@
+#main {
+  padding-top: 70px;
+}
+
+#main .banner img {
+  width: 100%;
+  min-height: 30vh;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+
+#main .content_ {
+  margin-top: 100px;
+}
+
+#main .content_ .img {
+  margin: 15px 0;
+}
+
+#main .content_ .img img {
+  width: 100%;
+}
+
+#main .text {
+  padding: 50px 0 300px 0;
+}
+
+#main .text .title {
+  font-weight: bold;
+  color: #171514;
+  font-size: 20px;
+  letter-spacing: 0.105em;
+}
+
+footer#footer {
+  position: unset;
+  background-color: white;
+}
+
+footer#footer p {
+  color: #171514;
+  padding: 10px 0 10px 0;
+}

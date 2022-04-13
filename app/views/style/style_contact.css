@@ -1,0 +1,135 @@
+#main {
+  padding-top: 190px;
+}
+
+#main .article {
+  margin-bottom: 200px;
+}
+
+#main .article .title {
+  font-size: 29px;
+  letter-spacing: 0.105em;
+  margin-bottom: 60px;
+}
+
+@media (max-width: 440px) {
+  #main .article .title {
+    text-align: center;
+  }
+}
+
+#main .article .content {
+  letter-spacing: 0.105em;
+  font-size: 18px;
+  color: #171514;
+  line-height: 200%;
+}
+
+@media (max-width: 440px) {
+  #main .article .content {
+    font-size: 16px;
+  }
+}
+
+#main .article .content p a {
+  letter-spacing: 0.105em;
+  font-size: 18px;
+  color: #171514;
+  line-height: 200%;
+}
+
+@media (max-width: 440px) {
+  #main .article .content p a {
+    font-size: 16px;
+  }
+}
+
+#main .article .line {
+  width: 100%;
+  height: 1px;
+  background-color: #696363;
+  margin: 90px 0;
+}
+
+#main .article form {
+  letter-spacing: 0.105em;
+  font-size: 18px;
+  color: #171514;
+  line-height: 200%;
+}
+
+@media (max-width: 440px) {
+  #main .article form {
+    font-size: 16px;
+  }
+}
+
+#main .article form .flex {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+#main .article form .flex label {
+  width: 100px;
+}
+
+#main .article form .flex .under_line {
+  display: inline-block;
+  width: calc(100% - 120px);
+  border-bottom: 1px solid #696363;
+}
+
+#main .article form .flex .under_line input[type='radio'] {
+  margin-right: 10px;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+#main .article form .flex .time {
+  display: inline-block;
+  width: calc(100% - 120px);
+  border-bottom: 1px solid #696363;
+}
+
+#main .article form .flex input[type='text'] {
+  outline: none;
+  border: none;
+  border: unset;
+  width: calc(100% - 120px);
+  margin-left: 10px;
+}
+
+#main .article form input[type=submit],
+#main .article form button {
+  border: 0;
+  background-color: darkgray;
+  color: #fff;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+
+#main .article form input[type=submit]:hover,
+#main .article form button:hover {
+  color: darkgray;
+  background-color: #fff;
+  border: 2px darkgray  solid;
+}
+
+footer#footer {
+  position: unset;
+  background-color: white;
+}
+
+footer#footer p {
+  color: #171514;
+  padding: 10px 0 10px 0;
+}
