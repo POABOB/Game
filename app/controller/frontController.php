@@ -21,8 +21,7 @@ class frontController extends \core\PPP {
      *          @OA\JsonContent(type="object",
      *              @OA\Property(property="code", type="integer", example=200),
      *              @OA\Property(property="message", example="null"),
-     *              @OA\Property(property="data", type="array",
-     *                  @OA\Items(type="object",
+     *              @OA\Property(property="data", type="object",
      *                      @OA\Property(property="game_id", type="int(11)", example="1"),
      *                      @OA\Property(property="name", type="string(128)", example="滑輪板街式賽_男子選手組"),
      *                      @OA\Property(property="type", type="string(1)", example="7"),
@@ -34,8 +33,6 @@ class frontController extends \core\PPP {
      *                              @OA\Property(property="totalScore", type="tinyint(3)", example="28"),
      *                          )
      *                      ),
-     *                      
-     *                  ),
      *              ),
      *          ),
      *      ),
@@ -74,8 +71,7 @@ class frontController extends \core\PPP {
             // if(count($data[1]) == 0) {
             //     $data[1][0] = [];
             // }
-            $data = '[
-                {
+            $data = '{
                   "game_id": 1,
                   "name": "滑輪板街式賽_男子選手組",
                   "type": 7,
@@ -90,8 +86,7 @@ class frontController extends \core\PPP {
                     {"player_id": 8,"name": "黎小明","score": [7, 6, 5, 2, 6, 6, 6],"totalScore": 25},
                     {"player_id": 9,"name": "邱小明","score": [7, 6, 5, 2, 10, 10, 10],"totalScore": 37}
                   ]
-                }
-              ]';
+                }';
             json(new resModel(200, json_decode($data)));
         }
 
