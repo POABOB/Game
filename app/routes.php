@@ -13,6 +13,17 @@ $router->get("/swagger", function() {
     echo $openapi->toJSON();
 });
 
+$router->options('/login', function() {});
+$router->options('/login/admin', function() {});
+$router->options('/logout', function() {});
+$router->options('/f/rank/list', function() {});
+$router->options('/score/list', function() {});
+$router->options('/score/confirm', function() {});
+$router->options('/rank/status', function() {});
+$router->options('/rank/confirm', function() {});
+$router->options('/game/list/(\d+)', function() {});
+$router->options('/game/detail/(\d+)', function() {});
+$router->options('/game/insert/score', function() {});
 
 // 登入登出
 $router->post('/login', 'loginController@login');
