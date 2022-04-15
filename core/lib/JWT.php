@@ -50,7 +50,7 @@ class Jwt {
             if($token[0] !== 'Bearer') {
                 $token = $headers['Authorization'];
             } else {
-                $token = $token[1]
+                $token = $token[1];
             }
         }
         return $token;
