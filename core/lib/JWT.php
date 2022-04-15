@@ -46,8 +46,8 @@ class Jwt {
         $headers = apache_request_headers();
         $token = "";
         if(isset($headers['Authorization'])) {
-            $token = explode(" ", $headers['Authorization']);
-            $token = $token[2];
+            // $token = explode(" ", $headers['Authorization']);
+            $token = $headers['Authorization'];
         }
         return $token;
     }

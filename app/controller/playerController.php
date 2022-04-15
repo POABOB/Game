@@ -36,34 +36,8 @@ class playerController extends \core\PPP {
      * )
      */
     public function index_() {
-        $database = new apiModel();
-        $data[0] = $database->index();
-        $data[1] = array();
-        foreach ($data[0] as $key => $value) {
-            if($data[0][$key]['img'] != "") {
-                $data[1][] = array(
-                    'name' => $data[0][$key]['img'],
-                    'path' => $data[0][$key]['img']
-                );
-            }
-            
-            if($data[0][$key]['img2'] != "") {
-                $data[1][] = array(
-                    'name' => $data[0][$key]['img2'],
-                    'path' => $data[0][$key]['img2']
-                );
-            }
-
-            if($data[0][$key]['small_img'] != "") {
-                $data[1][] = array(
-                    'name' => $data[0][$key]['small_img'],
-                    'path' => $data[0][$key]['small_img']
-                );
-            }
-        }
-        if(count($data[1]) == 0) {
-            $data[1][0] = [];
-        }
+        $database = new playerModel();
+        $data = $database->get_player();
         json(new resModel(200, $data));
     }
 
