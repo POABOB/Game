@@ -110,21 +110,21 @@ class frontController extends \core\PPP {
      */
     public function game_list() {
       // 獲取judger_id
-      // $token = JWT::getHeaders();
-      // $payload = JWT::verifyToken($token);
-      // $judger_id = $payload['judger_id'];
+      $token = JWT::getHeaders();
+      $payload = JWT::verifyToken($token);
+      $judger_id = $payload['judger_id'];
 
-      // $database = new frontModel();
-      // $data = $database->get_game_list(array('judger_id' => $judger_id));
+      $database = new frontModel();
+      $data = $database->get_game_list(array('judger_id' => $judger_id));
 
-      // json(new resModel(200, $data));
+      json(new resModel(200, $data));
 
-        $data = '[
-            {"game_id": 1,"name": "滑輪板街式賽_男子選手組","type": 7,"content": "成人組比賽","date": "2022-05-05"},
-            {"game_id": 2,"name": "滑輪板街式賽_女子選手組","type": 7,"content": "成人組比賽","date": "2022-05-05"},
-            {"game_id": 3,"name": "滑輪板街式賽_高中選手組","type": 2,"content": "學生組比賽","date": "2022-05-06"}
-          ]';
-        json(new resModel(200, json_decode($data)));
+        // $data = '[
+        //     {"game_id": 1,"name": "滑輪板街式賽_男子選手組","type": 7,"content": "成人組比賽","date": "2022-05-05"},
+        //     {"game_id": 2,"name": "滑輪板街式賽_女子選手組","type": 7,"content": "成人組比賽","date": "2022-05-05"},
+        //     {"game_id": 3,"name": "滑輪板街式賽_高中選手組","type": 2,"content": "學生組比賽","date": "2022-05-06"}
+        //   ]';
+        // json(new resModel(200, json_decode($data)));
     }
 
         /**
@@ -310,7 +310,7 @@ class frontController extends \core\PPP {
         json(new resModel(200, "新增成功"));
       }
 
-      json(new resModel(200, "新增成功"));
+      // json(new resModel(200, "新增成功"));
     }
 
     /**
