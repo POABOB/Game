@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: '峻 設計 Chun Design',
+  title: '比賽後台',
 
   /**
    * @type {boolean} true | false

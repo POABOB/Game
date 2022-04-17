@@ -1,39 +1,15 @@
 import request from '@/utils/request'
-export function getHome() {
+export function getStatus() {
   return request({
-    url: '/admin/index/list',
+    url: '/rank/status',
     method: 'get'
   })
 }
 
-export function insertHome(data) {
+export function confirm(data) {
   return request({
-    url: '/admin/index/add',
+    url: '/rank/confirm',
     method: 'post',
-    data
-  })
-}
-
-export function updateHome(data) {
-  return request({
-    url: '/admin/index/update',
-    method: 'patch',
-    data
-  })
-}
-
-export function deleteHome(data) {
-  return request({
-    url: '/admin/index/delete',
-    method: 'delete',
-    data
-  })
-}
-
-export function removeHomeFile(data) {
-  return request({
-    url: '/admin/index/file/remove',
-    method: 'delete',
     data
   })
 }

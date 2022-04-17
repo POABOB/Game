@@ -41,53 +41,37 @@ class frontController extends \core\PPP {
      * )
      */
     public function rank_list() {
-            // $database = new frontModel();
-            // $data[0] = $database->get_game();
-            // $data[1] = $database->get_rank();
+            $database = new frontModel();
+            $data = $database->get_rank_list();
 
-            // $data[1] = array();
-            // foreach ($data[0] as $key => $value) {
-            //     if($data[0][$key]['img'] != "") {
-            //         $data[1][] = array(
-            //             'name' => $data[0][$key]['img'],
-            //             'path' => $data[0][$key]['img']
-            //         );
-            //     }
-                
-            //     if($data[0][$key]['img2'] != "") {
-            //         $data[1][] = array(
-            //             'name' => $data[0][$key]['img2'],
-            //             'path' => $data[0][$key]['img2']
-            //         );
-            //     }
-    
-            //     if($data[0][$key]['small_img'] != "") {
-            //         $data[1][] = array(
-            //             'name' => $data[0][$key]['small_img'],
-            //             'path' => $data[0][$key]['small_img']
-            //         );
-            //     }
-            // }
-            // if(count($data[1]) == 0) {
-            //     $data[1][0] = [];
-            // }
-            $data = '{
-                  "game_id": 1,
-                  "name": "滑輪板街式賽_男子選手組",
-                  "type": 7,
-                  "rank": [
-                    {"player_id": 1,"name": "王小明","score": [7, 6, 5, 2, 1, 8, 8],"totalScore": 28},
-                    {"player_id": 2,"name": "陳小明","score": [9, 6, 5, 2, 1, 8, 8],"totalScore": 30},
-                    {"player_id": 3,"name": "李小明","score": [7, 6, 5, 2, 8, 8, 8],"totalScore": 31},
-                    {"player_id": 4,"name": "謝小明","score": [7, 6, 5, 2, 9, 8, 8],"totalScore": 32},
-                    {"player_id": 5,"name": "林小明","score": [7, 6, 5, 2, 10, 8, 8],"totalScore": 33},
-                    {"player_id": 6,"name": "魏小明","score": [7, 6, 5, 2, 10, 10, 8],"totalScore": 35},
-                    {"player_id": 7,"name": "蕭小明","score": [7, 6, 5, 2, 5, 5, 5],"totalScore": 22},
-                    {"player_id": 8,"name": "黎小明","score": [7, 6, 5, 2, 6, 6, 6],"totalScore": 25},
-                    {"player_id": 9,"name": "邱小明","score": [7, 6, 5, 2, 10, 10, 10],"totalScore": 37}
-                  ]
-                }';
-            json(new resModel(200, json_decode($data)));
+            if($data[0]) {
+              foreach ($data[1] as $key => $value) {
+                $data[0]['rank'][] = $data[1][$key];
+              }
+              $data = $data[0];
+            } else {
+              $data = null;
+            }
+
+            json(new resModel(200, $data));
+
+            // $data = '{
+            //       "game_id": 1,
+            //       "name": "滑輪板街式賽_男子選手組",
+            //       "type": 7,
+            //       "rank": [
+            //         {"player_id": 1,"name": "王小明","score": [7, 6, 5, 2, 1, 8, 8],"totalScore": 28},
+            //         {"player_id": 2,"name": "陳小明","score": [9, 6, 5, 2, 1, 8, 8],"totalScore": 30},
+            //         {"player_id": 3,"name": "李小明","score": [7, 6, 5, 2, 8, 8, 8],"totalScore": 31},
+            //         {"player_id": 4,"name": "謝小明","score": [7, 6, 5, 2, 9, 8, 8],"totalScore": 32},
+            //         {"player_id": 5,"name": "林小明","score": [7, 6, 5, 2, 10, 8, 8],"totalScore": 33},
+            //         {"player_id": 6,"name": "魏小明","score": [7, 6, 5, 2, 10, 10, 8],"totalScore": 35},
+            //         {"player_id": 7,"name": "蕭小明","score": [7, 6, 5, 2, 5, 5, 5],"totalScore": 22},
+            //         {"player_id": 8,"name": "黎小明","score": [7, 6, 5, 2, 6, 6, 6],"totalScore": 25},
+            //         {"player_id": 9,"name": "邱小明","score": [7, 6, 5, 2, 10, 10, 10],"totalScore": 37}
+            //       ]
+            //     }';
+            // json(new resModel(200, json_decode($data)));
         }
 
     /**
@@ -124,15 +108,17 @@ class frontController extends \core\PPP {
      *      @OA\Response(response="403", description="Permission denied"),
      * )
      */
-    public function game_list($judger_id) {
-        // if($judger_id > 0) {
-        //     $database = new frontModel();
-        //     $data = $database->get_game();
+    public function game_list() {
+      // 獲取judger_id
+      // $token = JWT::getHeaders();
+      // $payload = JWT::verifyToken($token);
+      // $judger_id = $payload['judger_id'];
 
-        //     json(new resModel(200, $data));
-        // } else {
-        //     json(new resModel(400, '獲取失敗'));
-        // }
+      // $database = new frontModel();
+      // $data = $database->get_game_list(array('judger_id' => $judger_id));
+
+      // json(new resModel(200, $data));
+
         $data = '[
             {"game_id": 1,"name": "滑輪板街式賽_男子選手組","type": 7,"content": "成人組比賽","date": "2022-05-05"},
             {"game_id": 2,"name": "滑輪板街式賽_女子選手組","type": 7,"content": "成人組比賽","date": "2022-05-05"},
@@ -217,7 +203,12 @@ class frontController extends \core\PPP {
                   "judger_id": 1,
                   "scores": [
                     {"score_id": 1,"score": 8.5,"round": "1"},
-                    {"score_id": 2,"score": 1.5,"round": "2"}
+                    {"score_id": 2,"score": 1.5,"round": "2"},
+                    {"score_id": 0,"score": -1,"round": "3"},
+                    {"score_id": 0,"score": -1,"round": "4"},
+                    {"score_id": 0,"score": -1,"round": "5"},
+                    {"score_id": 0,"score": -1,"round": "6"},
+                    {"score_id": 0,"score": -1,"round": "7"}
                   ]
                 },
                 {
@@ -228,7 +219,12 @@ class frontController extends \core\PPP {
                   "judger_id": 1,
                   "scores": [
                     {"score_id": 3,"score": 9.5,"round": "1"},
-                    {"score_id": 4,"score": 5.5,"round": "2"}
+                    {"score_id": 4,"score": 5.5,"round": "2"},
+                    {"score_id": 0,"score": -1,"round": "3"},
+                    {"score_id": 0,"score": -1,"round": "4"},
+                    {"score_id": 0,"score": -1,"round": "5"},
+                    {"score_id": 0,"score": -1,"round": "6"},
+                    {"score_id": 0,"score": -1,"round": "7"}
                   ]
                 }
               ]
@@ -269,13 +265,52 @@ class frontController extends \core\PPP {
      * )
      */
     public function game_insert_score() {
+      // 獲取judger_id
+      $token = JWT::getHeaders();
+      $payload = JWT::verifyToken($token);
+      $judger_id = $payload['judger_id'];
+      $judger_name = $payload['name'];
+       
+      $post = array();
+      $post = post_json();
+      $post['judger_id'] = $judger_id;
+      $post['judger_name'] = $judger_name;
+      $post['round'] = (string)$post['round'];
 
-        // $database = new frontModel();
-        // $data = $database->get_game();
+      //Validation
+      $v = new Validator();
+      $v->validate(
+          array(
+            '比賽編號' => $post['game_id'],
+            '選手編號' => $post['player_id'],
+            '分數' => $post['score'],
+            'ROUND' => $post['round']
+          ),
+          array(
+            '比賽編號' => array('required', 'maxLen' => 11),
+            '選手編號' => array('required', 'maxLen' => 11),
+            '分數' => array('required', 'maxLen' => 5),
+            'ROUND' => array('required', 'maxLen' => 1)
+          )
+      );
 
-        // json(new resModel(200, $data));
 
+      if($v->error()) {
+          json(new resModel(401, $v->error(), '提交格式有誤'));
+          return;
+      }
+
+      $database = new frontModel();
+      $data = $database->insert_score($post);
+      if($data == 2) {
+        json(new resModel(400, "新增失敗，該輪分數已存在!"));
+      } else if($data == 1) {
+        json(new resModel(400, "新增失敗，請勿跳輪評分!"));
+      } else {
         json(new resModel(200, "新增成功"));
+      }
+
+      json(new resModel(200, "新增成功"));
     }
 
     /**
@@ -389,7 +424,27 @@ class frontController extends \core\PPP {
      * )
      */
     public function score_confirm() {
+      $post = array();
+      $post = post_json();
+      
+      //Validation
+      if(count($post['score_id']) != 5) {
+          json(new resModel(401, '請提交5筆評分編號!'));
+          return;
+      }
+
+      $database = new frontModel();
+      $data = $database->score_confirm($post);
+      if($data == 3) {  
+        json(new resModel(400, "Score_id有無效值!"));
+      } else if($data == 2) {
+        json(new resModel(400, "Score超過輪數!"));
+      } else if($data == 1) {
+        json(new resModel(400, "請按照順序確認!"));
+      } else {
         json(new resModel(200, "確認成功"));
+      }
+        // json(new resModel(200, "確認成功"));
     }
 
     /**
@@ -404,14 +459,23 @@ class frontController extends \core\PPP {
      *          @OA\JsonContent(type="object",
      *              @OA\Property(property="code", type="integer", example=200),
      *              @OA\Property(property="message", example="null"),
-     *              @OA\Property(property="data", type="array",
+     *              @OA\Property(property="data", type="object",
+     *                @OA\Property(property="games", type="array",
      *                  @OA\Items(type="object",
-     *                      @OA\Property(property="game_id", type="int(11)", example="1"),
-     *                      @OA\Property(property="name", type="string(128)", example="滑輪板街式賽_男子選手組"),
-     *                      @OA\Property(property="type", type="string(1)", example="7"),
-     *                      @OA\Property(property="content", type="string(1)", example="成人組比賽"),
-     *                      @OA\Property(property="date", type="string(10)", example="2022-05-05"),
-     *                  ),
+     *                    @OA\Property(property="game_id", type="int(11)", example="1"),
+     *                    @OA\Property(property="name", type="string(128)", example="滑輪板街式賽_男子選手組"),
+     *                    @OA\Property(property="type", type="string(1)", example="7"),
+     *                    @OA\Property(property="content", type="string(1)", example="成人組比賽"),
+     *                    @OA\Property(property="date", type="string(10)", example="2022-05-05"),
+     *                  )
+     *                ),
+     *                @OA\Property(property="rank_sratus", type="object",
+     *                  @OA\Property(property="game_id", type="int(11)", example="1"),
+     *                  @OA\Property(property="name", type="string(128)", example="滑輪板街式賽_男子選手組"),
+     *                  @OA\Property(property="type", type="string(1)", example="7"),
+     *                  @OA\Property(property="content", type="string(1)", example="成人組比賽"),
+     *                  @OA\Property(property="date", type="string(10)", example="2022-05-05"),
+     *                ),
      *              ),
      *          ),
      *      ),
@@ -420,23 +484,36 @@ class frontController extends \core\PPP {
      * )
      */
     public function rank_status() {
-        $data = '[
-            {
-              "game_id": 1,
-              "name": "滑輪板街式賽_男子選手組",
-              "type": 7,
-              "content": "成人組比賽",
-              "date": "2022-05-05"
-            },
-            {
-                "game_id": 2,
-                "name": "滑輪板街式賽_女子選手組",
-                "type": 7,
-                "content": "成人組比賽",
-                "date": "2022-05-05"
-              }
-          ]';
-        json(new resModel(200, json_decode($data)));
+        $database = new frontModel();
+        $data = $database->get_rank_status();
+        json(new resModel(200, $data));
+
+        // $data = '{
+        //   "games": [
+        //     {
+        //       "game_id": 1,
+        //       "name": "滑輪板街式賽_男子選手組",
+        //       "type": 7,
+        //       "content": "成人組比賽",
+        //       "date": "2022-05-05"
+        //     },
+        //     {
+        //       "game_id": 2,
+        //       "name": "滑輪板街式賽_女子選手組",
+        //       "type": 7,
+        //       "content": "成人組比賽",
+        //       "date": "2022-05-05"
+        //     }
+        //   ],
+        //   "rank_status": {
+        //     "game_id": 1,
+        //     "name": "滑輪板街式賽_男子選手組",
+        //     "type": 7,
+        //     "content": "成人組比賽",
+        //     "date": "2022-05-05"
+        //   }
+        // }';
+        // json(new resModel(200, json_decode($data)));
     }
 
     /**
@@ -468,6 +545,30 @@ class frontController extends \core\PPP {
      * )
      */
     public function rank_confirm() {
+      $post = array();
+      $post = post_json();
+
+      //Validation
+      $v = new Validator();
+      $v->validate(
+          array('比賽編號' => $post['game_id']),
+          array('比賽編號' => array('required', 'maxLen' => 11))
+      );
+
+      if($v->error()) {
+          json(new resModel(401, $v->error(), '提交格式有誤'));
+          return;
+      }
+
+      $database = new frontModel();
+      $data = $database->rank_confirm(array('game_id' => $post['game_id']));
+      if($data == 1) {
+        json(new resModel(400, "確認失敗，比賽不存在!"));
+      } else {
         json(new resModel(200, "確認成功"));
+      }
+      
+
+      // json(new resModel(200, "確認成功"));
     }
 }

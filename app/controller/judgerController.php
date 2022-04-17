@@ -36,34 +36,8 @@ class judgerController extends \core\PPP {
      * )
      */
     public function index_() {
-        $database = new apiModel();
-        $data[0] = $database->index();
-        $data[1] = array();
-        foreach ($data[0] as $key => $value) {
-            if($data[0][$key]['img'] != "") {
-                $data[1][] = array(
-                    'name' => $data[0][$key]['img'],
-                    'path' => $data[0][$key]['img']
-                );
-            }
-            
-            if($data[0][$key]['img2'] != "") {
-                $data[1][] = array(
-                    'name' => $data[0][$key]['img2'],
-                    'path' => $data[0][$key]['img2']
-                );
-            }
-
-            if($data[0][$key]['small_img'] != "") {
-                $data[1][] = array(
-                    'name' => $data[0][$key]['small_img'],
-                    'path' => $data[0][$key]['small_img']
-                );
-            }
-        }
-        if(count($data[1]) == 0) {
-            $data[1][0] = [];
-        }
+        $database = new judgerModel();
+        $data = $database->get_judger(array('right[!]' => "2"));
         json(new resModel(200, $data));
     }
 
@@ -107,38 +81,41 @@ class judgerController extends \core\PPP {
         $v = new Validator();
         $v->validate(
             array(
-                '圖片1' => $post['img'],
-                '圖片2' => $post['img2'],
-                '圖片(mobile)' => $post['small_img'],
-                '狀態' => $post['status']
+                '姓名' => $post['name'],
+                'ID' => $post['ID'],
+                '電話' => $post['phone'],
+                '密碼' => $post['password'],
+                '權限' => $post['right']
             ),
             array(
-                '圖片1' => array('required', 'maxLen' => 256),
-                '圖片2' => array('maxLen' => 256),
-                '圖片(mobile)' => array('maxLen' => 256),
-                '狀態' => array('required', 'maxLen' => 9)
+                '姓名' => array('required', 'maxLen' => 128),
+                'ID' => array('required', 'maxLen' => 10),
+                '電話' => array('required', 'maxLen' => 15),
+                '密碼' => array('required', 'maxLen' => 64),
+                '權限' => array('required', 'maxLen' => 1),
             )
         );
 
         if($v->error()) {
-            json(new resModel(400, $v->error(), '提交格式有誤'));
+            json(new resModel(401, $v->error(), '提交格式有誤'));
             return;
         }
 
-        $database = new apiModel();
-        $data = $database->insertOrUpdate_index(
+        $database = new judgerModel();
+        $data = $database->insert_judger(
             array(
-                'img' => $post['img'],
-                'img2' => $post['img2'],
-                'small_img' => $post['small_img'],
-                'status' => $post['status']
+                'name' => $post['name'],
+                'ID' => $post['ID'],
+                'phone' => $post['phone'],
+                'password' => md5($post['password']),
+                'right' => (string)$post['right']
             )
         );
 
         if($data) {
-            json(new resModel(200, '圖片新增成功'));
+            json(new resModel(200, '新增成功'));
         } else {
-            json(new resModel(400, '圖片新增失敗'));
+            json(new resModel(400, '新增失敗'));
         }
     }
 
@@ -183,43 +160,42 @@ class judgerController extends \core\PPP {
         $v = new Validator();
         $v->validate(
             array(
-                'ID' => $post['id'], 
-                '圖片1' => $post['img'],
-                '圖片2' => $post['img2'],
-                '圖片(mobile)' => $post['small_img'],
-                '狀態' => $post['status']
+                '裁判ID' => $post['judger_id'],
+                '姓名' => $post['name'],
+                'ID' => $post['ID'],
+                '電話' => $post['phone'],
+                '權限' => $post['right']
             ),
             array(
-                'ID' => array('required', 'maxLen' => 11),
-                '圖片1' => array('required', 'maxLen' => 256),
-                '圖片2' => array('maxLen' => 256),
-                '圖片(mobile)' => array('maxLen' => 256),
-                '狀態' => array('required', 'maxLen' => 9)
+                '裁判ID' => array('required', 'maxLen' => 11),
+                '姓名' => array('required', 'maxLen' => 128),
+                'ID' => array('required', 'maxLen' => 10),
+                '電話' => array('required', 'maxLen' => 15),
+                '權限' => array('required', 'maxLen' => 1),
             )
         );
 
         if($v->error()) {
-            json(new resModel(400, $v->error(), '提交格式有誤'));
+            json(new resModel(401, $v->error(), '提交格式有誤'));
             return;
         }
 
-        $database = new apiModel();
-        $return = $database->insertOrUpdate_index(
+        $database = new judgerModel();
+        $return = $database->update_judger(
             array(
-                'img' => $post['img'],
-                'img2' => $post['img2'],
-                'small_img' => $post['small_img'],
-                'status' => $post['status']
+                'name' => $post['name'],
+                'ID' => $post['ID'],
+                'phone' => $post['phone'],
+                'right' => (string)$post['right']
             ),
-            array('id' => $post['id'])
+            array('judger_id' => $post['judger_id'])
         );
 
-        if($return == 2) {
-            json(new resModel(200, '圖片更新成功'));
-        } else if($return == 1) {
-            json(new resModel(400, '圖片更新失敗'));
-        } else {
-            json(new resModel(400, '圖片ID異常'));
+
+        if($return == 1) {
+            json(new resModel(200, '更新成功'));
+        } else if($return == 0) {
+            json(new resModel(400, '更新失敗'));
         }
     }
 
@@ -259,25 +235,143 @@ class judgerController extends \core\PPP {
         //Validation
         $v = new Validator();
         $v->validate(
-            array('ID' => $post['id']),
-            array('ID' => array('required', 'maxLen' => 11))
+            array('裁判ID' => $post['judger_id']),
+            array('裁判ID' => array('required', 'maxLen' => 11))
         );
 
         if($v->error()) {
-            json(new resModel(400, $v->error(), '提交格式有誤'));
+            json(new resModel(401, $v->error(), '提交格式有誤'));
             return;
         }
 
-        $database = new apiModel();
-        $this->_removeFile($post['img']);
-        $this->_removeFile($post['img2']);
-        $this->_removeFile($post['small_img']);
-        $data = $database->delete_index(array('id' => $post['id'], 'orders' => intval($post['orders'])));
+        $database = new judgerModel();
+        $return = $database->update_judger(
+            array('hidden' => '1'),
+            array('judger_id' => $post['judger_id'])
+        );
 
-        if($data) {
-            json(new resModel(200, '圖片刪除成功'));
-        } else {
-            json(new resModel(400, '圖片刪除失敗'));
+
+        if($return == 1) {
+            json(new resModel(200, '刪除成功'));
+        } else if($return == 0) {
+            json(new resModel(400, '刪除失敗'));
+        }
+    }
+
+    /**
+     * @OA\Patch(
+     *     path="/api/admin/judger/back", 
+     *     tags={"後台裁判管理"},
+     *     summary="後台恢復裁判",
+     *     security={{"Authorization":{}}}, 
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="json",
+     *              @OA\Schema(
+     *                  required={"judger_id"},
+     *                  @OA\Property(property="judger_id", type="int(11)", example="1"),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response="200", 
+     *          description="恢復成功",
+     *          @OA\JsonContent(type="object",
+     *              @OA\Property(property="code", type="integer", example=200),
+     *              @OA\Property(property="message", type="string", example="恢復成功"),
+     *              @OA\Property(property="data", example="null"),
+     *          ),
+     *      ),
+     *      @OA\Response(response="400", description="恢復失敗"),
+     *      @OA\Response(response="401", description="提交格式有誤")
+     * )
+     */
+    public function delete_back() {
+        $post = array();
+        $post = post_json();
+
+        //Validation
+        $v = new Validator();
+        $v->validate(
+            array('裁判ID' => $post['judger_id']),
+            array('裁判ID' => array('required', 'maxLen' => 11))
+        );
+
+        if($v->error()) {
+            json(new resModel(401, $v->error(), '提交格式有誤'));
+            return;
+        }
+
+        $database = new judgerModel();
+        $return = $database->update_judger(
+            array('hidden' => '0'),
+            array('judger_id' => $post['judger_id'])
+        );
+
+
+        if($return == 1) {
+            json(new resModel(200, '恢復成功'));
+        } else if($return == 0) {
+            json(new resModel(400, '恢復失敗'));
+        }
+    }
+
+        /**
+     * @OA\Patch(
+     *     path="/api/admin/judger/password", 
+     *     tags={"後台裁判管理"},
+     *     summary="後台更新裁判密碼",
+     *     security={{"Authorization":{}}}, 
+     *      @OA\RequestBody(
+     *          @OA\MediaType(
+     *              mediaType="json",
+     *              @OA\Schema(
+     *                  required={"judger_id", "password"},
+     *                  @OA\Property(property="judger_id", type="int(11)", example="1"),
+     *                  @OA\Property(property="password", type="string(64)", example="123456"),
+     *              )
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response="200", 
+     *          description="更新成功",
+     *          @OA\JsonContent(type="object",
+     *              @OA\Property(property="code", type="integer", example=200),
+     *              @OA\Property(property="message", type="string", example="更新成功"),
+     *              @OA\Property(property="data", example="null"),
+     *          ),
+     *      ),
+     *      @OA\Response(response="400", description="更新失敗"),
+     *      @OA\Response(response="401", description="提交格式有誤")
+     * )
+     */
+    public function update_password() {
+        $post = array();
+        $post = post_json();
+
+        //Validation
+        $v = new Validator();
+        $v->validate(
+            array('裁判ID' => $post['judger_id'], '密碼' => $post['password']),
+            array('裁判ID' => array('required', 'maxLen' => 11), '密碼' => array('required', 'maxLen' => 64))
+        );
+
+        if($v->error()) {
+            json(new resModel(401, $v->error(), '提交格式有誤'));
+            return;
+        }
+
+        $database = new judgerModel();
+        $return = $database->update_judger(
+            array('password' => md5($post['password'])),
+            array('judger_id' => $post['judger_id'])
+        );
+
+
+        if($return == 1) {
+            json(new resModel(200, '更新成功'));
+        } else if($return == 0) {
+            json(new resModel(400, '更新失敗'));
         }
     }
 }

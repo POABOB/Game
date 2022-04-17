@@ -30,9 +30,9 @@ const mutations = {
 const actions = {
   // user login
   login({ commit }, userInfo) {
-    const { account, password } = userInfo
+    const { ID, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ account: account.trim(), password: password }).then(response => {
+      login({ ID: ID.trim(), password: password }).then(response => {
         if (response.code === 200) {
           const { data } = response
           commit('SET_TOKEN', data.token)
@@ -57,10 +57,10 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { account, avatar } = data
+        const { name } = data
 
-        commit('SET_ACCOUNT', account)
-        commit('SET_AVATAR', avatar)
+        commit('SET_ACCOUNT', name)
+        commit('SET_AVATAR', 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif?imageView2/1/w/80/h/80')
         resolve(data)
       }).catch(error => {
         reject(error)

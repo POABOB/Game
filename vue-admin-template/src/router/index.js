@@ -61,81 +61,49 @@ export const constantRoutes = [
     redirect: '/home',
     children: [{
       path: 'home',
-      name: '首頁',
+      name: '排行榜',
       component: () => import('@/views/home/index'),
-      meta: { title: '首頁', icon: 'home' }
+      meta: { title: '排行榜', icon: 'home' }
     }]
   },
 
   {
-    path: '/projects',
+    path: '/player',
     component: Layout,
-    redirect: 'noRedirect',
-    name: '空間設計',
-    meta: { title: '空間設計', icon: 'eye-open' },
     children: [
       {
-        path: '/projects/type',
-        name: '專案類型',
-        component: () => import('@/views/projects/type'),
-        meta: { title: '專案類型' }
-      },
-
-      {
-        path: '/projects/index',
-        name: '專案管理',
-        component: () => import('@/views/projects/index'),
-        meta: { title: '專案管理' }
+        path: '/player/index',
+        name: '選手管理',
+        component: () => import('@/views/player/index'),
+        meta: { title: '選手管理', icon: 'user' }
       }
 
     ]
   },
 
   {
-    path: '/aboutus',
+    path: '/judger',
     component: Layout,
-    redirect: 'noRedirect',
-    name: '關於我們',
-    meta: { title: '關於我們', icon: 'user' },
     children: [
       {
-        path: '/aboutus/introduction',
-        name: '關於介紹',
-        component: () => import('@/views/aboutus/introduction'),
-        meta: { title: '關於介紹' }
-      },
-
-      {
-        path: '/aboutus/members',
-        name: '團隊介紹',
-        component: () => import('@/views/aboutus/members'),
-        meta: { title: '團隊介紹' }
+        path: '/judger/index',
+        name: '裁判管理',
+        component: () => import('@/views/judger/index'),
+        meta: { title: '裁判管理', icon: 'tree' }
       }
 
     ]
   },
 
   {
-    path: '/service',
+    path: '/game',
     component: Layout,
-    redirect: '/service',
+    redirect: '/game',
     children: [{
-      path: 'service',
-      name: '服務流程',
-      component: () => import('@/views/service/index'),
-      meta: { title: '服務流程', icon: 'table' }
-    }]
-  },
-
-  {
-    path: '/contactus',
-    component: Layout,
-    redirect: '/contactus',
-    children: [{
-      path: 'contactus',
-      name: '聯絡我們',
-      component: () => import('@/views/contactus/index'),
-      meta: { title: '聯絡我們', icon: 'example' }
+      path: 'game',
+      name: '比賽管理',
+      component: () => import('@/views/game/index'),
+      meta: { title: '比賽管理', icon: 'example' }
     }]
   },
 

@@ -2,12 +2,12 @@
   <div class="app-container">
     <el-row :gutter="20">
       <el-col>
-        <el-button type="info" class="m" @click="Add">新增公司</el-button>
+        <el-button type="info" class="m" @click="Add">新增選手</el-button>
       </el-col>
       <el-col>
         <el-form :inline="true" class="demo-form-inline">
           <el-form-item label="搜尋">
-            <el-input v-model="searchMap.word" placeholder="公司名稱 統編..." />
+            <el-input v-model="searchMap.word" placeholder="姓名 單位..." />
           </el-form-item>
           <el-form-item>
             <el-button type="primary" icon="el-icon-search" @click="Search">查詢</el-button>
@@ -36,54 +36,19 @@
       </el-table-column>
       <el-table-column
         align="center"
-        prop="department"
-        label="公司"
+        prop="name"
+        label="姓名"
       />
       <el-table-column
         align="center"
-        prop="tel"
-        label="電話"
+        prop="unit"
+        label="單位"
       />
       <el-table-column
         align="center"
-        prop="tax"
-        label="傳真"
+        prop="comment"
+        label="備註"
       />
-      <el-table-column
-        align="center"
-        prop="addr"
-        label="地址"
-      />
-      <el-table-column
-        align="center"
-        prop="addr_map"
-        label="地址連結"
-        width="200"
-      >
-        <template slot-scope="scope">
-          <el-link type="info" :href="scope.row.addr_map" target="_blank">{{ scope.row.addr_map }}</el-link>
-        </template>
-      </el-table-column>
-      <el-table-column
-        align="center"
-        prop="email"
-        label="email"
-      />
-      <el-table-column
-        align="center"
-        prop="tax_id"
-        label="統編"
-      />
-      <el-table-column
-        class-name="status-col"
-        label="狀態"
-        width="110"
-        align="center"
-      >
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
-        </template>
-      </el-table-column>
       <el-table-column
         align="center"
         label="操作"
@@ -94,13 +59,13 @@
             type="info"
             icon="el-icon-edit"
             circle
-            @click="Edit(scope.row.id)"
+            @click="Edit(scope.row.player_id)"
           />
           <el-button
             type="danger"
             icon="el-icon-delete"
             circle
-            @click="Delete(scope.row.id)"
+            @click="Delete(scope.row.player_id)"
           />
         </template>
       </el-table-column>
@@ -118,62 +83,30 @@
     />
 
     <!-- Form -->
-    <el-dialog title="公司管理" :visible.sync="dialogFormVisible">
-      <el-form ref="form" :model="form" :inline="true" label-position="top" :rules="rules">
-        <el-form-item label="公司" prop="department">
+    <el-dialog title="選手管理" :visible.sync="dialogFormVisible">
+      <el-form ref="form" :model="form" :rules="rules">
+        <el-form-item label="姓名" prop="name">
           <el-input
-            v-model="form.department"
+            v-model="form.name"
             autocomplete="off"
-            placeholder="公司"
+            placeholder="姓名"
           />
         </el-form-item>
-        <el-form-item label="電話" prop="tel">
+        <el-form-item label="單位" prop="unit">
           <el-input
-            v-model="form.tel"
+            v-model="form.unit"
             autocomplete="off"
-            placeholder="電話"
+            placeholder="單位"
           />
         </el-form-item>
-        <el-form-item label="傳真" prop="tax">
+        <el-form-item label="備註" prop="comment">
           <el-input
-            v-model="form.tax"
+            v-model="form.comment"
             autocomplete="off"
-            placeholder="傳真"
+            type="textarea"
+            placeholder="備註"
+            :rows="8"
           />
-        </el-form-item>
-        <el-form-item label="地址" prop="addr">
-          <el-input
-            v-model="form.addr"
-            autocomplete="off"
-            placeholder="地址"
-          />
-        </el-form-item>
-        <el-form-item label="地址連結" prop="addr_map">
-          <el-input
-            v-model="form.addr_map"
-            autocomplete="off"
-            placeholder="地址連結"
-          />
-        </el-form-item>
-        <el-form-item label="信箱" prop="email">
-          <el-input
-            v-model="form.email"
-            autocomplete="off"
-            placeholder="信箱"
-          />
-        </el-form-item>
-        <el-form-item label="統編" prop="tax_id">
-          <el-input
-            v-model="form.tax_id"
-            autocomplete="off"
-            placeholder="統編"
-          />
-        </el-form-item>
-        <el-form-item label="狀態">
-          <el-select v-model="form.status" placeholder="狀態">
-            <el-option label="發布" value="published" />
-            <el-option label="草稿" value="draft" />
-          </el-select>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -203,12 +136,10 @@
 </template>
 
 <script>
-import { getContactUS,
-  insertContactUS,
-  updateContactUS,
-  deleteContactUS } from '@/api/contactus'
-import { clearCache } from '@/api/clear'
-
+import { getPlayer,
+  insertPlayer,
+  updatePlayer,
+  deletePlayer } from '@/api/player'
 export default {
   filters: {
     statusFilter(status) {
@@ -230,46 +161,21 @@ export default {
         word: null
       },
       form: {
-        id: '',
-        department: '',
-        tel: '',
-        tax: '',
-        addr: '',
-        addr_map: '',
-        email: '',
-        tax_id: '',
-        orders: 0,
-        status: 'published'
+        player_id: '',
+        name: '',
+        unit: '',
+        comment: ''
       },
       dialogFormVisible: false,
       mode: 'add',
       rules: {
-        department: [
-          { required: true, message: '請輸入公司!', trigger: 'blur' },
-          { max: 64, message: '長度不能超過64個字!', trigger: 'blur' }
-        ],
-        tel: [
-          { required: true, message: '請輸入公司電話!', trigger: 'blur' },
-          { max: 15, message: '長度不能超過15個字!', trigger: 'blur' }
-        ],
-        tax: [
-          { required: true, message: '請輸入公司傳真!', trigger: 'blur' },
-          { max: 20, message: '長度不能超過20個字!', trigger: 'blur' }
-        ],
-        addr: [
-          { required: true, message: '請輸入公司地址!', trigger: 'blur' },
-          { max: 256, message: '長度不能超過256個字!', trigger: 'blur' }
-        ],
-        addr_map: [
-          { max: 256, message: '長度不能超過256個字!', trigger: 'blur' }
-        ],
-        email: [
-          { required: true, message: '請輸入公司Email!', trigger: 'blur' },
+        name: [
+          { required: true, message: '請輸入姓名!', trigger: 'blur' },
           { max: 128, message: '長度不能超過128個字!', trigger: 'blur' }
         ],
-        tax_id: [
-          { required: true, message: '請輸入公司統編!', trigger: 'blur' },
-          { max: 20, message: '長度不能超過20個字!', trigger: 'blur' }
+        unit: [
+          { required: true, message: '請輸入單位!', trigger: 'blur' },
+          { max: 128, message: '長度不能超過128個字!', trigger: 'blur' }
         ]
       }
     }
@@ -289,9 +195,8 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getContactUS().then(response => {
+      getPlayer().then(response => {
         const data = (response.data === null) ? [] : JSON.parse(JSON.stringify(response.data))
-        clearCache()
         this.list = data
         this.fullList = data
         this.listLoading = false
@@ -309,11 +214,10 @@ export default {
     Search() {
       this.listLoading = true
       if (this.searchMap.word !== null) {
-        this.list = this.fullList.filter(array => array.department.match(this.searchMap.word) || array.tax_id.match(this.searchMap.word))
+        this.list = this.fullList.filter(array => array.name.match(this.searchMap.word) || array.unit.match(this.searchMap.word))
       } else {
         this.list = this.fullList
       }
-
       this.listLoading = false
     },
     Switch() {
@@ -326,18 +230,18 @@ export default {
     Add() {
       if (this.mode === 'edit') {
         this.mode = 'add'
-        this.form = { id: '', department: '', tel: '', tax: '', addr: '', addr_map: '', email: '', tax_id: '', orders: 0, status: 'published' }
+        this.form = { player_id: '', name: '', unit: '', comment: '' }
       }
       this.Switch()
     },
-    Edit(id) {
+    Edit(player_id) {
       if (this.mode === 'add') {
         this.mode = 'edit'
       }
-      this.form = { id: '', department: '', tel: '', tax: '', addr: '', addr_map: '', email: '', tax_id: '', orders: 0, status: 'published' }
+      this.form = { player_id: '', name: '', unit: '', comment: '' }
       this.Switch()
       const form = this.list.filter(array => {
-        return array.id === id
+        return array.player_id === player_id
       })[0]
       this.form = JSON.parse(JSON.stringify(form))
     },
@@ -345,10 +249,10 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.Switch()
-          insertContactUS(this.form).then(res => {
+          insertPlayer(this.form).then(res => {
             if (res.code === 200) {
               this.resSuccess(res.message)
-              this.form = { id: '', department: '', tel: '', tax: '', addr: '', addr_map: '', email: '', tax_id: '', orders: 0, status: 'published' }
+              this.form = { player_id: '', name: '', unit: '', comment: '' }
               this.fetchData()
             } else {
               this.resError(res.message)
@@ -366,10 +270,10 @@ export default {
       this.$refs.form.validate((valid) => {
         if (valid) {
           this.Switch()
-          updateContactUS(this.form).then(res => {
+          updatePlayer(this.form).then(res => {
             if (res.code === 200) {
               this.resSuccess(res.message)
-              this.form = { id: '', department: '', tel: '', tax: '', addr: '', addr_map: '', email: '', tax_id: '', orders: 0, status: 'published' }
+              this.form = { player_id: '', name: '', unit: '', comment: '' }
               this.fetchData()
             } else {
               this.resError(res.message)
@@ -383,22 +287,21 @@ export default {
         }
       })
     },
-    Delete(id) {
+    Delete(player_id) {
       this.$confirm(`確定要刪除嗎？`)
         .then(() => {
           this.form = this.list.filter(array => {
-            return array.id === id
+            return array.player_id === player_id
           })[0]
-          deleteContactUS(this.form).then(res => {
+          console.log(this.form)
+          deletePlayer(this.form).then(res => {
             if (res.code === 200) {
               this.resSuccess(res.message)
-              this.form = { id: '', department: '', tel: '', tax: '', addr: '', addr_map: '', email: '', tax_id: '', orders: 0, status: 'published' }
+              this.form = { player_id: '', name: '', unit: '', comment: '' }
               this.fetchData()
             } else {
               this.resError(res.message)
             }
-          }).catch(error => {
-            alert(error)
           })
         }).catch(() => {
         })
@@ -422,3 +325,9 @@ export default {
   }
 }
 </script>
+
+<style lang="css">
+.el-table .cell {
+  white-space: pre-line;
+}
+</style>

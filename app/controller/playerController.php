@@ -13,7 +13,7 @@ class playerController extends \core\PPP {
         /**
      * @OA\Get(
      *     path="/api/admin/player", 
-     *     tags={"後台比賽管理"},
+     *     tags={"後台選手管理"},
      *     summary="後台獲取選手",
      *     security={{"Authorization":{}}}, 
      *      @OA\Response(
@@ -44,7 +44,7 @@ class playerController extends \core\PPP {
     /**
      * @OA\Post(
      *     path="/api/admin/player", 
-     *     tags={"後台比賽管理"},
+     *     tags={"後台選手管理"},
      *     summary="後台新增選手",
      *     security={{"Authorization":{}}}, 
      *      @OA\RequestBody(
@@ -79,45 +79,43 @@ class playerController extends \core\PPP {
         $v = new Validator();
         $v->validate(
             array(
-                '圖片1' => $post['img'],
-                '圖片2' => $post['img2'],
-                '圖片(mobile)' => $post['small_img'],
-                '狀態' => $post['status']
+                '選手姓名' => $post['name'],
+                '選手單位' => $post['unit'],
+                '選手備註' => $post['comment']
             ),
             array(
-                '圖片1' => array('required', 'maxLen' => 256),
-                '圖片2' => array('maxLen' => 256),
-                '圖片(mobile)' => array('maxLen' => 256),
-                '狀態' => array('required', 'maxLen' => 9)
+                '選手姓名' => array('required', 'maxLen' => 128),
+                '選手單位' => array('required', 'maxLen' => 128),
+                '選手備註' => array( 'maxLen' => 128),
             )
         );
 
         if($v->error()) {
-            json(new resModel(400, $v->error(), '提交格式有誤'));
+            json(new resModel(401, $v->error(), '提交格式有誤'));
             return;
         }
 
-        $database = new apiModel();
-        $data = $database->insertOrUpdate_index(
+        $database = new playerModel();
+        $data = $database->insert_player(
             array(
-                'img' => $post['img'],
-                'img2' => $post['img2'],
-                'small_img' => $post['small_img'],
-                'status' => $post['status']
+                'name' => $post['name'],
+                'unit' => $post['unit'],
+                'comment' => $post['comment']
             )
         );
 
+
         if($data) {
-            json(new resModel(200, '圖片新增成功'));
-        } else {
-            json(new resModel(400, '圖片新增失敗'));
+            json(new resModel(200, '新增成功'));
+        } else if($return == 0) {
+            json(new resModel(400, '新增失敗'));
         }
     }
 
     /**
      * @OA\Patch(
      *     path="/api/admin/player", 
-     *     tags={"後台比賽管理"},
+     *     tags={"後台選手管理"},
      *     summary="後台更新選手",
      *     security={{"Authorization":{}}}, 
      *      @OA\RequestBody(
@@ -153,50 +151,46 @@ class playerController extends \core\PPP {
         $v = new Validator();
         $v->validate(
             array(
-                'ID' => $post['id'], 
-                '圖片1' => $post['img'],
-                '圖片2' => $post['img2'],
-                '圖片(mobile)' => $post['small_img'],
-                '狀態' => $post['status']
+                '選手編號' => $post['player_id'],
+                '選手姓名' => $post['name'],
+                '選手單位' => $post['unit'],
+                '選手備註' => $post['comment']
             ),
             array(
-                'ID' => array('required', 'maxLen' => 11),
-                '圖片1' => array('required', 'maxLen' => 256),
-                '圖片2' => array('maxLen' => 256),
-                '圖片(mobile)' => array('maxLen' => 256),
-                '狀態' => array('required', 'maxLen' => 9)
+                '選手編號' => array('required', 'maxLen' => 11),
+                '選手姓名' => array('required', 'maxLen' => 128),
+                '選手單位' => array('required', 'maxLen' => 128),
+                '選手備註' => array( 'maxLen' => 128),
             )
         );
 
         if($v->error()) {
-            json(new resModel(400, $v->error(), '提交格式有誤'));
+            json(new resModel(401, $v->error(), '提交格式有誤'));
             return;
         }
 
-        $database = new apiModel();
-        $return = $database->insertOrUpdate_index(
+        $database = new playerModel();
+        $return = $database->update_player(
             array(
-                'img' => $post['img'],
-                'img2' => $post['img2'],
-                'small_img' => $post['small_img'],
-                'status' => $post['status']
+                'name' => $post['name'],
+                'unit' => $post['unit'],
+                'comment' => $post['comment']
             ),
-            array('id' => $post['id'])
+            array('player_id' => $post['player_id'])
         );
 
-        if($return == 2) {
-            json(new resModel(200, '圖片更新成功'));
-        } else if($return == 1) {
-            json(new resModel(400, '圖片更新失敗'));
-        } else {
-            json(new resModel(400, '圖片ID異常'));
+
+        if($return == 1) {
+            json(new resModel(200, '更新成功'));
+        } else if($return == 0) {
+            json(new resModel(400, '更新失敗'));
         }
     }
 
     /**
      * @OA\Delete(
      *     path="/api/admin/player", 
-     *     tags={"後台比賽管理"},
+     *     tags={"後台選手管理"},
      *     summary="後台刪除選手",
      *     security={{"Authorization":{}}}, 
      *      @OA\RequestBody(
@@ -228,25 +222,26 @@ class playerController extends \core\PPP {
         //Validation
         $v = new Validator();
         $v->validate(
-            array('ID' => $post['id']),
-            array('ID' => array('required', 'maxLen' => 11))
+            array('選手編號' => $post['player_id']),
+            array('選手編號' => array('required', 'maxLen' => 11))
         );
 
         if($v->error()) {
-            json(new resModel(400, $v->error(), '提交格式有誤'));
+            json(new resModel(401, $v->error(), '提交格式有誤'));
             return;
         }
 
-        $database = new apiModel();
-        $this->_removeFile($post['img']);
-        $this->_removeFile($post['img2']);
-        $this->_removeFile($post['small_img']);
-        $data = $database->delete_index(array('id' => $post['id'], 'orders' => intval($post['orders'])));
+        $database = new playerModel();
+        $return = $database->update_player(
+            array('hidden' => '1'),
+            array('player_id' => $post['player_id'])
+        );
 
-        if($data) {
-            json(new resModel(200, '圖片刪除成功'));
-        } else {
-            json(new resModel(400, '圖片刪除失敗'));
+
+        if($return == 1) {
+            json(new resModel(200, '刪除成功'));
+        } else if($return == 0) {
+            json(new resModel(400, '刪除失敗'));
         }
     }
 }

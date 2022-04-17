@@ -11,10 +11,10 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="account"
-          v-model="loginForm.account"
+          ref="ID"
+          v-model="loginForm.ID"
           placeholder="帳號"
-          name="account"
+          name="ID"
           type="text"
           tabindex="1"
           auto-complete="on"
@@ -62,19 +62,19 @@ export default {
       }
     }
     const validatePassword = (rule, value, callback) => {
-      if (value.length < 6) {
-        callback(new Error('密碼不能小於六個字...'))
+      if (value.length < 4) {
+        callback(new Error('密碼不能小於4個字...'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        account: '',
+        ID: '',
         password: ''
       },
       loginRules: {
-        account: [{ required: true, trigger: 'blur', validator: validateAccount }],
+        ID: [{ required: true, trigger: 'blur', validator: validateAccount }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,

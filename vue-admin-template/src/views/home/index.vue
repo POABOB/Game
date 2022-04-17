@@ -1,10 +1,11 @@
 <template>
   <div class="app-container">
-    <!-- <el-row :gutter="20">
+    <el-row :gutter="20">
       <el-col>
-        <el-button type="info" @click="Add">新增圖片</el-button>
+        <p v-if="rank_status === null">當前排行榜尚未被選擇! </p>
+        <p v-else>當前排行榜顯示：{{ rank_status.name }}，比賽日期： {{ rank_status.date }}，比賽編號： {{ rank_status.game_id }}</p>
       </el-col>
-    </el-row> -->
+    </el-row>
 
     <el-table
       v-loading="listLoading"
@@ -13,6 +14,7 @@
       border
       fit
       highlight-current-row
+      :row-class-name="tableRowClassName"
     >
       <el-table-column
         align="center"
@@ -24,84 +26,52 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="img"
-        label="圖片1"
         align="center"
-      >
-        <template slot-scope="scope">
-          <div class="demo-image__preview">
-            <el-image
-              style="width: 100px; height: 100px"
-              :src="staticPath+scope.row.img"
-              :preview-src-list="[staticPath+scope.row.img]"
-            />
-          </div>
-        </template>
-      </el-table-column>
+        prop="game_id"
+        label="比賽編號"
+      />
       <el-table-column
-        prop="img"
-        label="圖片2"
         align="center"
-      >
-        <template slot-scope="scope">
-          <div v-show="scope.row.img2.length > 5" class="demo-image__preview">
-            <el-image
-              style="width: 100px; height: 100px"
-              :src="staticPath+scope.row.img2"
-              :preview-src-list="[staticPath+scope.row.img2]"
-            />
-          </div>
-        </template>
-      </el-table-column>
+        prop="date"
+        label="日期"
+      />
       <el-table-column
-        prop="small_img"
-        label="圖片(mobile)"
         align="center"
-      >
-        <template slot-scope="scope">
-          <div v-show="scope.row.small_img.length > 5" class="demo-image__preview">
-            <el-image
-              style="width: 100px; height: 100px"
-              :src="staticPath+scope.row.small_img"
-              :preview-src-list="[staticPath+scope.row.small_img]"
-            />
-          </div>
-        </template>
-      </el-table-column>
+        prop="name"
+        label="比賽名稱"
+      />
+      <el-table-column
+        align="center"
+        prop="content"
+        label="比賽內容"
+      />
       <el-table-column
         class-name="status-col"
-        label="狀態"
-        width="110"
+        label="類型"
         align="center"
       >
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }}</el-tag>
+          <el-tag :type="scope.row.type | statusFilter">{{ scope.row.type === '2' ? '兩輪' : '兩輪+五大招' }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column
         align="center"
-        label="操作"
+        label="套用"
         width="115"
       >
         <template slot-scope="scope">
           <el-button
-            type="info"
-            icon="el-icon-edit"
-            circle
-            @click="Edit(scope.row.id)"
-          />
-          <!-- <el-button
             type="danger"
-            icon="el-icon-delete"
+            icon="el-icon-check"
             circle
-            @click="Delete(scope.row.id)"
-          /> -->
+            @click="Edit(scope.row.game_id)"
+          />
         </template>
       </el-table-column>
     </el-table>
 
     <el-pagination
-      v-show="false"
+      v-show="true"
       background
       layout="prev, pager, next, sizes, total, jumper"
       align="center"
@@ -111,164 +81,26 @@
       @current-change="handleCurrentChange"
       @size-change="handleSizeChange"
     />
-
-    <!-- Form -->
-    <el-dialog title="首頁管理" :visible.sync="dialogFormVisible">
-      <el-alert
-        title="列對應首頁圖片區塊，圖片1 就是橫幅大圖圖片1 ＋ 圖片2 是左右兩欄，圖片 mobile 是手機版圖片（非必要）"
-        type="info"
-        :closable="false"
-      />
-      <el-form ref="form" :model="form" :top="true" :rules="rules">
-        <el-form-item label="圖片1" prop="img">
-          <el-input
-            v-model="form.img"
-            autocomplete="off"
-            :disabled="fileList.length === 1"
-            placeholder="圖片1"
-          />
-          <el-upload
-            class="upload-demo"
-            :action="uploadURL+type"
-            name="upload"
-            :on-success="handleSuccess"
-            :on-remove="handleRemove"
-            :before-remove="beforeRemove"
-            :limit="1"
-            :file-list="fileList"
-            :headers="headers"
-          >
-            <el-button slot="trigger" size="small" type="primary">選取圖片</el-button>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="圖片2" prop="img2">
-          <el-input
-            v-model="form.img2"
-            autocomplete="off"
-            :disabled="fileList2.length === 1"
-            placeholder="圖片2"
-          />
-          <el-upload
-            class="upload-demo"
-            :action="uploadURL+type"
-            name="upload"
-            :on-success="handleSuccess2"
-            :on-remove="handleRemove2"
-            :before-remove="beforeRemove"
-            :limit="1"
-            :file-list="fileList2"
-            :headers="headers"
-          >
-            <el-button slot="trigger" size="small" type="primary">選取圖片</el-button>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="圖片(mobile)" prop="small_img">
-          <el-input
-            v-model="form.small_img"
-            autocomplete="off"
-            :disabled="fileList3.length === 1"
-            placeholder="圖片(mobile)"
-          />
-          <el-upload
-            class="upload-demo"
-            :action="uploadURL+type"
-            name="upload"
-            :on-success="handleSuccess3"
-            :on-remove="handleRemove3"
-            :before-remove="beforeRemove"
-            :limit="1"
-            :file-list="fileList3"
-            :headers="headers"
-          >
-            <el-button slot="trigger" size="small" type="primary">選取圖片</el-button>
-          </el-upload>
-        </el-form-item>
-        <el-form-item label="狀態">
-          <el-select v-model="form.status" placeholder="狀態">
-            <el-option label="發布" value="published" />
-            <el-option label="草稿" value="draft" />
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button
-          @click="dialogFormVisible = false"
-        >
-          取 消
-        </el-button>
-        <el-button
-          v-show="
-            mode === 'add'"
-          type="info"
-          @click="Insert"
-        >
-          確 定
-        </el-button>
-        <el-button
-          v-show=" mode === 'edit'"
-          type="info"
-          @click="Update"
-        >
-          更新
-        </el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getHome,
-  insertHome,
-  updateHome,
-  deleteHome,
-  removeHomeFile } from '@/api/home'
-import { clearCache } from '@/api/clear'
-import { getToken } from '@/utils/auth'
+import { getStatus,
+  confirm } from '@/api/home'
 export default {
   filters: {
     statusFilter(status) {
-      const statusMap = {
-        published: 'success',
-        draft: 'gray'
-      }
+      const statusMap = { '2': 'success', '7': 'gray' }
       return statusMap[status]
     }
   },
   data() {
     return {
       list: [],
-      fullList: [],
-      localFile: [],
+      rank_status: null,
       listLoading: true,
       pagesize: 5,
-      currpage: 1,
-      form: {
-        id: 0,
-        img: '',
-        img2: '',
-        small_img: '',
-        status: 'published'
-      },
-      dialogFormVisible: false,
-      mode: 'add',
-      fileList: [],
-      fileList2: [],
-      fileList3: [],
-      type: 'home',
-      uploadURL: '/api/admin/file/upload?type=',
-      headers: {
-        'X-Token': getToken()
-      },
-      staticPath: process.env.VUE_APP_STATIC_PATH,
-      rules: {
-        img: [
-          { required: true, message: '請輸入或上傳圖片!', trigger: 'change' },
-          { max: 256, message: '長度不能超過256個字!', trigger: 'change' }
-        ],
-        small_img: [
-          { max: 256, message: '長度不能超過256個字!', trigger: 'change' }
-        ]
-      }
+      currpage: 1
     }
   },
   created() {
@@ -277,12 +109,11 @@ export default {
   methods: {
     fetchData() {
       this.listLoading = true
-      getHome().then(response => {
-        const data = (response.data === null) ? [] : JSON.parse(JSON.stringify(response.data))
-        clearCache()
-        this.list = data[0]
-        this.fullList = data[0]
-        this.localFile = data[1]
+      getStatus().then(response => {
+        const data = response.data
+        console.log()
+        this.list = (data['games'] === null) ? [] : data['games']
+        this.rank_status = data['rank_status']
         this.listLoading = false
       }).catch(error => {
         alert(error)
@@ -295,195 +126,29 @@ export default {
     handleSizeChange(psize) {
       this.pagesize = psize
     },
-    handleSuccess(response, file, fileList) {
-      this.form.img = response.data.path
-      this.fileList = fileList
-    },
-    handleRemove(file, fileList) {
-      const form = {}
-      form['file'] = this.form.img
-      removeHomeFile(form).then(res => {
+    Edit(game_id) {
+      const form = {
+        game_id: game_id
+      }
+      confirm(form).then(res => {
         if (res.code === 200) {
-          if (this.mode === 'edit') {
-            const l = this.localFile.length
-            for (let i = 0; i < l; i++) {
-              if (this.localFile[i].path === this.form.img) {
-                this.localFile.splice(i, 1)
-              }
-            }
-          }
-          this.form.img = ''
-          this.fileList = []
-        }
-      })
-    },
-    handleSuccess2(response, file, fileList) {
-      this.form.img2 = response.data.path
-      this.fileList2 = fileList
-    },
-    handleRemove2(file, fileList) {
-      const form = {}
-      form['file'] = this.form.img2
-      removeHomeFile(form).then(res => {
-        if (res.code === 200) {
-          if (this.mode === 'edit') {
-            const l = this.localFile.length
-            for (let i = 0; i < l; i++) {
-              if (this.localFile[i].path === this.form.img2) {
-                this.localFile.splice(i, 1)
-              }
-            }
-          }
-          this.form.img2 = ''
-          this.fileList2 = []
-        }
-      })
-    },
-    handleSuccess3(response, file, fileList) {
-      this.form.small_img = response.data.path
-      this.fileList3 = fileList
-    },
-    handleRemove3(file, fileList) {
-      const form = {}
-      form['file'] = this.form.small_img
-      removeHomeFile(form).then(res => {
-        if (res.code === 200) {
-          if (this.mode === 'edit') {
-            const l = this.localFile.length
-            for (let i = 0; i < l; i++) {
-              if (this.localFile[i].path === this.form.small_img) {
-                this.localFile.splice(i, 1)
-              }
-            }
-          }
-          this.form.small_img = ''
-          this.fileList3 = []
-        }
-      })
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`do you really want to delete ${file.name}？`)
-    },
-    Switch() {
-      if (this.dialogFormVisible) {
-        this.dialogFormVisible = false
-      } else {
-        this.dialogFormVisible = true
-      }
-    },
-    Add() {
-      if (this.mode === 'edit') {
-        this.mode = 'add'
-        this.form = { id: 0, img: '', img2: '', small_img: '', status: 'published' }
-        this.fileList = []
-        this.fileList2 = []
-        this.fileList3 = []
-      }
-      this.Switch()
-    },
-    Edit(id) {
-      if (this.mode === 'add') {
-        this.mode = 'edit'
-      }
-      this.form = { id: 0, img: '', img2: '', small_img: '', status: 'published' }
-      this.fileList = []
-      this.fileList2 = []
-      this.fileList3 = []
-      this.Switch()
-      const form = this.list.filter(array => {
-        return parseInt(array.id) === parseInt(id)
-      })[0]
-      this.form = JSON.parse(JSON.stringify(form))
-
-      const file = this.localFile.filter(array => {
-        return array.path === this.form.img
-      })[0]
-      if (file) {
-        this.fileList.push(file)
-      }
-
-      const file2 = this.localFile.filter(array => {
-        return array.path === this.form.img2
-      })[0]
-      if (file2) {
-        this.fileList2.push(file2)
-      }
-
-      const file3 = this.localFile.filter(array => {
-        return array.path === this.form.small_img
-      })[0]
-      if (file3) {
-        this.fileList3.push(file3)
-      }
-    },
-    Insert() {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.Switch()
-          insertHome(this.form).then(res => {
-            if (res.code === 200) {
-              this.resSuccess(res.message)
-              this.form = { id: 0, img: '', img2: '', small_img: '', status: 'published' }
-              this.fileList = []
-              this.fileList2 = []
-              this.fileList3 = []
-              this.fetchData()
-            } else {
-              this.resError(res.message)
-            }
-          }).catch(error => {
-            alert(error)
-          })
+          this.resSuccess(res.message)
+          this.fetchData()
         } else {
-          this.resError('請注意表單格式!')
-          return false
+          this.resError(res.message)
         }
+      }).catch(error => {
+        alert(error)
       })
     },
-    Update() {
-      this.$refs.form.validate((valid) => {
-        if (valid) {
-          this.Switch()
-          updateHome(this.form).then(res => {
-            if (res.code === 200) {
-              this.resSuccess(res.message)
-              this.form = { id: 0, img: '', img2: '', small_img: '', status: 'published' }
-              this.fileList = []
-              this.fileList2 = []
-              this.fileList3 = []
-              this.fetchData()
-            } else {
-              this.resError(res.message)
-            }
-          }).catch(error => {
-            alert(error)
-          })
-        } else {
-          this.resError('請注意表單格式!')
-          return false
-        }
-      })
-    },
-    Delete(id) {
-      this.$confirm(`確定要刪除嗎？`)
-        .then(() => {
-          this.form = this.list.filter(array => {
-            return array.id === id
-          })[0]
-          deleteHome(this.form).then(res => {
-            if (res.code === 200) {
-              this.resSuccess(res.message)
-              this.form = { id: 0, img: '', img2: '', small_img: '', status: 'published' }
-              this.fileList = []
-              this.fileList2 = []
-              this.fileList3 = []
-              this.fetchData()
-            } else {
-              this.resError(res.message)
-            }
-          })
-        }).catch(() => {
-        })
+    tableRowClassName({ row, rowIndex }) {
+      if (this.rank_status === null) {
+        return ''
+      }
+      if (this.rank_status.game_id === row.game_id) {
+        return 'success-row'
+      }
+      return ''
     },
     resSuccess(title, message = '') {
       this.$notify({
@@ -504,3 +169,12 @@ export default {
   }
 }
 </script>
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>

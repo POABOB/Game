@@ -40,7 +40,7 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { updatePassword } from '@/api/user'
+import { updateJudgerPassword } from '@/api/judger'
 export default {
   name: 'Dashboard',
   data() {
@@ -60,9 +60,13 @@ export default {
   methods: {
     Update() {
       if (!(this.form.oldpass === '' || this.form.password === '' || this.form.passconf === '')) {
-        if (!(this.form.oldpass.length < 6 || this.form.password.length < 6 || this.form.passconf.length < 6)) {
+        if (!(this.form.oldpass.length < 4 || this.form.password.length < 4 || this.form.passconf.length < 4)) {
           if (this.form.password === this.form.passconf) {
-            updatePassword(this.form).then(res => {
+            const form = {
+              judger_id: 1,
+              password: this.form.password
+            }
+            updateJudgerPassword(form).then(res => {
               if (res.code === 200) {
                 this.resSuccess('更新成功')
                 this.Clear()
@@ -74,7 +78,7 @@ export default {
             this.resError('密碼確認不相符')
           }
         } else {
-          this.resError('欄位長度不能小於6')
+          this.resError('欄位長度不能小於4')
         }
       } else {
         this.resError('欄位不能為空')

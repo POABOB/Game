@@ -11,6 +11,7 @@ class model extends Medoo
 	public function __construct()
 	{
 		$database = config::all('database');
+		// p($database);exit;
 		parent::__construct($database);
 	}
 

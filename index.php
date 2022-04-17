@@ -41,7 +41,6 @@ include CORE.'/ppp.php';
 //自動加載
 spl_autoload_register('\core\ppp::load');
 header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization');
 
