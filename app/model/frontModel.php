@@ -209,5 +209,48 @@ class frontModel extends model {
     }
     // score_confirm() END
 
-    
+    // game_detail() START
+    public function get_game_detail($where = array()) {
+        // 獲取該比賽
+        $data[0] = $this->get('Game', 
+            array('game_id', 'name', 'type', 'content', 'date'), 
+            array('game_id' => $where['game_id'])
+        );
+        $data[1] = $this->select('PlayerInGame', 
+            array('[><]Player' => array('player_id' => 'player_id')),
+            array(
+                'Player.player_id',
+                'Player.name',
+                'Player.unit', 
+                'Player.comment', 
+            ),
+            array(
+                'ORDER' => array('Player.player_id' => 'ASC'),
+                'PlayerInGame.game_id' => $where['game_id']
+            )
+        );
+        $data[2] = $this->select('PlayerInGame', 
+            array(
+                '[><]Score' => array('game_id' => 'game_id'),
+                '[><]Player' => array('player_id' => 'player_id')
+            ),
+            array(
+                'Score.player_id',
+                // 'Score.player_name',
+                // 'Score.judger_id',
+                'Score.score',
+                // 'Score.type',
+                'Score.round',
+                // 'Player.unit', 
+                // 'Player.comment', 
+            ),
+            array(
+                'ORDER' => array('Score.player_id' => 'ASC'),
+                'Score.game_id' => $where['game_id'],
+                'Score.judger_id' => $where['judger_id'],
+            )
+        );
+        return $data;
+    }
+    // game_detail() END
 }

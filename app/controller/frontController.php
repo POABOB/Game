@@ -181,57 +181,64 @@ class frontController extends \core\PPP {
      */
     public function game_detail($game_id) {
         if($game_id > 0) {
+            // 獲取judger_id
+            $token = JWT::getHeaders();
+            $payload = JWT::verifyToken($token);
+            $judger_id = $payload['judger_id'];
+
             $database = new frontModel();
-            $data = $database->get_game();
+            $data = $database->get_game_detail(
+                array('game_id' => $game_id, 'judger_id' => $judger_id)
+            );
 
             json(new resModel(200, $data));
         } else {
             json(new resModel(400, '比賽編號不符合規則!'));
         }
-        $data = '[
-            {
-              "game_id": 1,
-              "name": "滑輪板街式賽_男子選手組",
-              "type": 7,
-              "content": "成人組比賽",
-              "date": "2022-05-05",
-              "players": [
-                {
-                  "player_id": 1,
-                  "name": "王小明",
-                  "unit": "國立台中一中",
-                  "comment": "詳細備註",
-                  "judger_id": 1,
-                  "scores": [
-                    {"score_id": 1,"score": 8.5,"round": "1"},
-                    {"score_id": 2,"score": 1.5,"round": "2"},
-                    {"score_id": 0,"score": -1,"round": "3"},
-                    {"score_id": 0,"score": -1,"round": "4"},
-                    {"score_id": 0,"score": -1,"round": "5"},
-                    {"score_id": 0,"score": -1,"round": "6"},
-                    {"score_id": 0,"score": -1,"round": "7"}
-                  ]
-                },
-                {
-                  "player_id": 2,
-                  "name": "陳小明",
-                  "unit": "國立台中二中",
-                  "comment": "詳細備註",
-                  "judger_id": 1,
-                  "scores": [
-                    {"score_id": 3,"score": 9.5,"round": "1"},
-                    {"score_id": 4,"score": 5.5,"round": "2"},
-                    {"score_id": 0,"score": -1,"round": "3"},
-                    {"score_id": 0,"score": -1,"round": "4"},
-                    {"score_id": 0,"score": -1,"round": "5"},
-                    {"score_id": 0,"score": -1,"round": "6"},
-                    {"score_id": 0,"score": -1,"round": "7"}
-                  ]
-                }
-              ]
-            }
-          ]';
-        json(new resModel(200, json_decode($data)));
+        // $data = '[
+        //     {
+        //       "game_id": 1,
+        //       "name": "滑輪板街式賽_男子選手組",
+        //       "type": 7,
+        //       "content": "成人組比賽",
+        //       "date": "2022-05-05",
+        //       "players": [
+        //         {
+        //           "player_id": 1,
+        //           "name": "王小明",
+        //           "unit": "國立台中一中",
+        //           "comment": "詳細備註",
+        //           "judger_id": 1,
+        //           "scores": [
+        //             {"score_id": 1,"score": 8.5,"round": "1"},
+        //             {"score_id": 2,"score": 1.5,"round": "2"},
+        //             {"score_id": 0,"score": -1,"round": "3"},
+        //             {"score_id": 0,"score": -1,"round": "4"},
+        //             {"score_id": 0,"score": -1,"round": "5"},
+        //             {"score_id": 0,"score": -1,"round": "6"},
+        //             {"score_id": 0,"score": -1,"round": "7"}
+        //           ]
+        //         },
+        //         {
+        //           "player_id": 2,
+        //           "name": "陳小明",
+        //           "unit": "國立台中二中",
+        //           "comment": "詳細備註",
+        //           "judger_id": 1,
+        //           "scores": [
+        //             {"score_id": 3,"score": 9.5,"round": "1"},
+        //             {"score_id": 4,"score": 5.5,"round": "2"},
+        //             {"score_id": 0,"score": -1,"round": "3"},
+        //             {"score_id": 0,"score": -1,"round": "4"},
+        //             {"score_id": 0,"score": -1,"round": "5"},
+        //             {"score_id": 0,"score": -1,"round": "6"},
+        //             {"score_id": 0,"score": -1,"round": "7"}
+        //           ]
+        //         }
+        //       ]
+        //     }
+        //   ]';
+        // json(new resModel(200, json_decode($data)));
     }
 
     /**
@@ -417,7 +424,10 @@ class frontController extends \core\PPP {
                   "comment": "詳細備註",
                   "scores": [
                     {"score_id": 1,"score": 8.5,"judger_id": 1,"name": "王裁判"},
-                    {"score_id": 2,"score": 1.5,"judger_id": 2,"name": "陳裁判"}
+                    {"score_id": 2,"score": 1.5,"judger_id": 2,"name": "陳裁判"},
+                    {"score_id": 0,"score": 0,"judger_id": 3,"name": "張裁判"},
+                    {"score_id": 0,"score": 0,"judger_id": 4,"name": "林裁判"},
+                    {"score_id": 0,"score": 0,"judger_id": 5,"name": "梨裁判"}
                   ]
                 },
                 {
@@ -427,7 +437,10 @@ class frontController extends \core\PPP {
                   "comment": "詳細備註",
                   "scores": [
                     {"score_id": 3,"score": 9.5,"judger_id": 1,"name": "王裁判"},
-                    {"score_id": 4,"score": 5.5,"judger_id": 2,"name": "陳裁判"}
+                    {"score_id": 4,"score": 5.5,"judger_id": 2,"name": "陳裁判"},
+                    {"score_id": 0,"score": 0,"judger_id": 3,"name": "張裁判"},
+                    {"score_id": 0,"score": 0,"judger_id": 4,"name": "林裁判"},
+                    {"score_id": 0,"score": 0,"judger_id": 5,"name": "梨裁判"}
                   ]
                 }
               ]
