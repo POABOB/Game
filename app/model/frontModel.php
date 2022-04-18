@@ -309,65 +309,109 @@ class frontModel extends model {
             } else {
                 $data[0]['round'] = $distinct_newest_round['round'];
             }
-            $data[0]['players'] = array();
-            return $data[0];
         } else {
             $data[0]['round'] = $distinct_lowest_not_confirm_round['round'];
-            
-            // 獲取選手
-            $data[1] = $this->select('PlayerInGame', 
-                array('[><]Player' => array('player_id' => 'player_id')),
-                array(
-                    'Player.player_id',
-                    'Player.name',
-                    'Player.unit', 
-                    'Player.comment', 
-                ),
-                array(
-                    'ORDER' => array('Player.player_id' => 'ASC'),
-                    'PlayerInGame.game_id' => $where['game_id']
-                )
-            );
-            $data[2] = $this->select('Score', 
-                array('player_id', 'score_id', 'score', 'judger_id', 'judger_name'),
-                array(
-                    'ORDER' => array('player_id' => 'ASC'),
-                    'game_id' => $where['game_id'],
-                    'round' => $distinct_lowest_not_confirm_round['round'],
-                )
+        }
+
+        
+        // 獲取選手
+        $data[1] = $this->select('PlayerInGame', 
+            array('[><]Player' => array('player_id' => 'player_id')),
+            array(
+                'Player.player_id',
+                'Player.name',
+                'Player.unit', 
+                'Player.comment', 
+            ),
+            array(
+                'ORDER' => array('Player.player_id' => 'ASC'),
+                'PlayerInGame.game_id' => $where['game_id']
+            )
+        );
+
+        $data[2] = $this->select('Score', 
+            array('player_id', 'score_id', 'score', 'judger_id', 'judger_name'),
+            array(
+                'ORDER' => array('player_id' => 'ASC'),
+                'game_id' => $where['game_id'],
+                'round' => $data[0]['round'],
+                'confirm' => '0'
+            )
+        );
+
+        $data[3] = $this->select('JudgerInGame', 
+            array('[><]Judger' => array('judger_id' => 'judger_id')),
+            array('Judger.judger_id','Judger.name',),
+            array(
+                'ORDER' => array('Judger.judger_id' => 'ASC'),
+                'JudgerInGame.game_id' => $where['game_id']
+            )
+        );
+
+        // 整理資料
+        foreach ($data[1] as $key => $value) {
+            $scores = array_filter(
+                $data[2],
+                function($val) use ($data, $key) {
+                    return $val['player_id'] == $data[1][$key]['player_id'];
+                }
             );
 
-            // 整理資料
-            foreach ($data[1] as $key => $value) {
-                $scores = array_filter(
-                    $data[2],
-                    function($val) use ($data, $key) {
-                        return $val['player_id'] == $data[1][$key]['player_id'];
+            $score_length = count($scores);
+            $total_round = intval($data[0]['type']);
+            if($score_length > 0) {
+                $data[1][$key]['confirm'] = 0;
+                $scores = array_values($scores);
+                // $data[1][$key]['scores'] = $scores;
+                for($i = 1; $i <= 5; $i++) {
+                    $d = array_find(
+                        $scores,
+                        function($val) use ($data, $i) {
+                            return $val['judger_id'] == $data[3][$i - 1]['judger_id'];
+                        }
+                    );
+                    if($d) {
+                        $data[1][$key]['scores'][] = $d;
+                    } else {
+                        $data[1][$key]['scores'][] = array(
+                            'player_id' => $data[1][$key]['player_id'], 
+                            'score_id' => 0, 
+                            'score' => 0, 
+                            'judger_id' => 0, 
+                            'judger_name' => ''
+                        );
                     }
+                }
+            } else {
+                // confirm = 1
+                $confirm_data = $this->select('Score', 
+                    array('player_id', 'score_id', 'score', 'judger_id', 'judger_name'),
+                    array(
+                        'game_id' => $where['game_id'],
+                        'round' => $data[0]['round'],
+                        'confirm' => '1'
+                    )
                 );
-
-                $score_length = count($scores);
-                $total_round = intval($data[0]['type']);
-                if($score_length > 0) {
-                    $scores = array_values($scores);
-                    $data[1][$key]['scores'] = $scores;
-                    for($i = $score_length + 1; $i <= 5; $i++) {
-                        $data[1][$key]['scores'][] = array('player_id' => $data[1][$key]['player_id'], 'score_id' => 0, 'score' => 0, 'judger_id' => 0, 'judger_name' => '');
-                    }
+                if(count($confirm_data) != 0) {
+                    $data[1][$key]['confirm'] = 1;
+                    $data[1][$key]['scores'] = $confirm_data;
                 } else {
+                    // 空SCORE
                     for($i = 1; $i <= 5; $i++) {
-                        $data[1][$key]['scores'][] = array('player_id' => $data[1][$key]['player_id'], 'score_id' => 0, 'score' => 0, 'judger_id' => 0, 'judger_name' => '');
+                        $data[1][$key]['confirm'] = 0;
+                        $data[1][$key]['scores'][] = array(
+                            'player_id' => $data[1][$key]['player_id'], 
+                            'score_id' => 0, 
+                            'score' => 0, 
+                            'judger_id' => isset($data[3][$key]['judger_id']) ? $data[3][$key]['judger_id'] : 0, 
+                            'judger_name' => isset($data[3][$key]['name']) ? $data[3][$key]['name'] : ''
+                        );
                     }
                 }
             }
-            $data[0]['players'] = $data[1];
-            $data = $data[0];
         }
-
-
-        
-
-
+        $data[0]['players'] = $data[1];
+        $data = $data[0];
 
         return $data;
     }
