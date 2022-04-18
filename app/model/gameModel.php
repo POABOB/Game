@@ -5,7 +5,7 @@ use core\lib\model;
 class gameModel extends model {
     
     public function get_game($para = array('game_id', 'name', 'type', 'content', 'date'), $where = array(), $table = 'Game') {
-        $where = array('hidden' => '0');
+        $where = array('hidden' => '0', 'ORDER' => array('game_id' => 'DESC'));
         $data[0] = $this->select($table, $para, $where);
         // PLAYERINGAME
         $data[1] = $this->select('Player', 
