@@ -5,6 +5,7 @@ use core\lib\model;
 class judgerModel extends model {
     public function get_judger($where = array(), $para = array('judger_id', 'name', 'ID', 'phone', 'right'), $table = 'Judger') {
         $where['hidden'] = '0';
+        $where['ORDER'] = array('judger_id' => 'DESC');
         return $this->select($table, $para, $where);
     }
 

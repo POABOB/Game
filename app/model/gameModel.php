@@ -16,7 +16,7 @@ class gameModel extends model {
                 'Player.name',
                 'Player.unit',
             ),
-            array('ORDER' => array('PlayerInGame.player_id' => 'ASC'),)
+            array('ORDER' => array('PlayerInGame.player_id' => 'DESC'),)
         );
         // JUDGERINGAME
         $data[2] = $this->select('Judger', 
@@ -29,7 +29,7 @@ class gameModel extends model {
                 'Judger.right'
             ),
             array(
-                'ORDER' => array('JudgerInGame.judger_id' => 'ASC'),
+                'ORDER' => array('JudgerInGame.judger_id' => 'DESC'),
             )
         );
         $data[3] = $this->select('Player', array('player_id', 'name', 'unit'), array('hidden' => '0'));
@@ -48,7 +48,7 @@ class gameModel extends model {
                 'Player.name',
                 'Player.unit',
             ),
-            array('ORDER' => array('PlayerInGame.player_id' => 'ASC'),)
+            array('ORDER' => array('PlayerInGame.player_id' => 'DESC'),)
         );
         return $data;
     }
@@ -65,7 +65,7 @@ class gameModel extends model {
                 'Judger.right'
             ),
             array(
-                'ORDER' => array('JudgerInGame.judger_id' => 'ASC'),
+                'ORDER' => array('JudgerInGame.judger_id' => 'DESC'),
             )
         );
         return $data;
