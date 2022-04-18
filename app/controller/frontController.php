@@ -332,13 +332,13 @@ class frontController extends \core\PPP {
      *                      @OA\Property(property="type", type="string(1)", example="7"),
      *                      @OA\Property(property="content", type="string(1)", example="成人組比賽"),
      *                      @OA\Property(property="date", type="string(10)", example="2022-05-05"),
+     *                      @OA\Property(property="round", type="string(1)", example="1~7(第幾輪評分)"),
      *                      @OA\Property(property="players", type="array",
      *                          @OA\Items(type="object",
      *                              @OA\Property(property="player_id", type="int(11)", example="1"),
      *                              @OA\Property(property="name", type="string(128)", example="王小明"),
      *                              @OA\Property(property="unit", type="string(1)", example="國立台中一中"),
      *                              @OA\Property(property="comment", type="string(1)", example="詳細備註"),
-     *                              @OA\Property(property="round", type="string(1)", example="1~7(第幾輪評分)"),
      *                              @OA\Property(property="scores", type="array",
      *                                  @OA\Items(type="object",
      *                                      @OA\Property(property="score_id", type="int(11)", example="1"),
@@ -366,13 +366,13 @@ class frontController extends \core\PPP {
               "type": 7,
               "content": "成人組比賽",
               "date": "2022-05-05",
+              "round": "1",
               "players": [
                 {
                   "player_id": 1,
                   "name": "王小明",
                   "unit": "國立台中一中",
                   "comment": "詳細備註",
-                  "round": "1",
                   "scores": [
                     {"score_id": 1,"score": 8.5,"judger_id": 1,"name": "王裁判"},
                     {"score_id": 2,"score": 1.5,"judger_id": 2,"name": "陳裁判"}
@@ -383,7 +383,6 @@ class frontController extends \core\PPP {
                   "name": "陳小明",
                   "unit": "國立台中二中",
                   "comment": "詳細備註",
-                  "round": "1",
                   "scores": [
                     {"score_id": 3,"score": 9.5,"judger_id": 1,"name": "王裁判"},
                     {"score_id": 4,"score": 5.5,"judger_id": 2,"name": "陳裁判"}

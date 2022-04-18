@@ -6,12 +6,12 @@ use core\common\auth;
 if(!isset($_SESSION['user'])) $_SESSION['user'] = false;
 
 
-$router->get("/doc", function() { require(PPP . '/static/doc/index.html'); });
-$router->get("/swagger", function() {
-    $openapi = \OpenApi\Generator::scan([APP . '/controller']);
-    header('Content-Type: application/json');
-    echo $openapi->toJSON();
-});
+// $router->get("/doc", function() { require(PPP . '/static/doc/index.html'); });
+// $router->get("/swagger", function() {
+//     $openapi = \OpenApi\Generator::scan([APP . '/controller']);
+//     header('Content-Type: application/json');
+//     echo $openapi->toJSON();
+// });
 
 $router->options('/.*', function() {});
 // 登入登出
