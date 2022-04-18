@@ -260,11 +260,11 @@ class frontModel extends model {
             if($score_length > 0) {
                 array_push($data[1][$key]['scores'], $scores);
                 for($i = $score_length + 1; $i <= $total_round; $i++) {
-                    $data[1][$key]['scores'][] = array('score_id' => 0, 'scores' => 0, 'round' => (string)$i);
+                    $data[1][$key]['scores'][] = array('score_id' => 0, 'score' => 0, 'round' => (string)$i);
                 }
             } else {
                 for($i = 1; $i <= $total_round; $i++) {
-                    $data[1][$key]['scores'][] = array('score_id' => 0, 'scores' => 0, 'round' => (string)$i);
+                    $data[1][$key]['scores'][] = array('score_id' => 0, 'score' => 0, 'round' => (string)$i);
                 }
             }
         }
@@ -274,4 +274,77 @@ class frontModel extends model {
         return $data;
     }
     // game_detail() END
+
+    // score_list() START
+    public function get_score_list($where = array()) {
+        // 獲取該比賽
+        $data[0] = $this->get('Game', 
+            array('game_id', 'name', 'type', 'content', 'date'), 
+            array('game_id' => $where['game_id'])
+        );
+
+        // 獲取最低round
+        $round = $this->select('Score', 
+            array('@round'), 
+            array('game_id' => $where['game_id'], 'confirm' => '0')
+        );
+
+        // $data[1] = $this->select('PlayerInGame', 
+        //     array('[><]Player' => array('player_id' => 'player_id')),
+        //     array(
+        //         'Player.player_id',
+        //         'Player.name',
+        //         'Player.unit', 
+        //         'Player.comment', 
+        //     ),
+        //     array(
+        //         'ORDER' => array('Player.player_id' => 'ASC'),
+        //         'PlayerInGame.game_id' => $where['game_id']
+        //     )
+        // );
+        // $data[2] = $this->select('PlayerInGame', 
+        //     array(
+        //         '[><]Score' => array('game_id' => 'game_id'),
+        //         '[><]Player' => array('player_id' => 'player_id')
+        //     ),
+        //     array(
+        //         'Score.player_id',
+        //         'Score.score',
+        //         'Score.round',
+        //     ),
+        //     array(
+        //         'ORDER' => array('Score.player_id' => 'ASC'),
+        //         'Score.game_id' => $where['game_id'],
+        //         'Score.round' => $round,
+        //     )
+        // );
+
+        // // 整理資料
+        // foreach ($data[1] as $key => $value) {
+        //     $scores = array_filter(
+        //         $data[2],
+        //         function($val) use ($data) {
+        //             return $val['player_id'] == $data[1][$key]['player_id'];
+        //         }
+        //     );
+
+        //     $score_length = count($scores);
+        //     $total_round = intval($data[0]['type']);
+        //     if($score_length > 0) {
+        //         array_push($data[1][$key]['scores'], $scores);
+        //         for($i = $score_length + 1; $i <= $total_round; $i++) {
+        //             $data[1][$key]['scores'][] = array('score_id' => 0, 'scores' => 0, 'round' => (string)$i);
+        //         }
+        //     } else {
+        //         for($i = 1; $i <= $total_round; $i++) {
+        //             $data[1][$key]['scores'][] = array('score_id' => 0, 'scores' => 0, 'round' => (string)$i);
+        //         }
+        //     }
+        // }
+        // $data[0]['players'] = $data[1];
+        // $data = $data[0];
+
+        return $data;
+    }
+    // score_list() END
 }

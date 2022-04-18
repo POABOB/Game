@@ -136,7 +136,7 @@ class frontController extends \core\PPP {
      *     security={{"Authorization":{}}}, 
      *     @OA\Parameter(
      *          name="game_id",
-     *          description="裁判id",
+     *          description="比賽 id",
      *          in = "path",
      *          required=true,
      *          @OA\Schema(type="integer") 
@@ -371,31 +371,28 @@ class frontController extends \core\PPP {
      *          @OA\JsonContent(type="object",
      *              @OA\Property(property="code", type="integer", example=200),
      *              @OA\Property(property="message", example="null"),
-     *              @OA\Property(property="data", type="array",
-     *                  @OA\Items(type="object",
-     *                      @OA\Property(property="game_id", type="int(11)", example="1"),
-     *                      @OA\Property(property="name", type="string(128)", example="滑輪板街式賽_男子選手組"),
-     *                      @OA\Property(property="type", type="string(1)", example="7"),
-     *                      @OA\Property(property="content", type="string(1)", example="成人組比賽"),
-     *                      @OA\Property(property="date", type="string(10)", example="2022-05-05"),
-     *                      @OA\Property(property="round", type="string(1)", example="1~7(第幾輪評分)"),
-     *                      @OA\Property(property="players", type="array",
-     *                          @OA\Items(type="object",
-     *                              @OA\Property(property="player_id", type="int(11)", example="1"),
-     *                              @OA\Property(property="name", type="string(128)", example="王小明"),
-     *                              @OA\Property(property="unit", type="string(1)", example="國立台中一中"),
-     *                              @OA\Property(property="comment", type="string(1)", example="詳細備註"),
-     *                              @OA\Property(property="scores", type="array",
-     *                                  @OA\Items(type="object",
-     *                                      @OA\Property(property="score_id", type="int(11)", example="1"),
-     *                                      @OA\Property(property="score", type="float(2,2)", example="8.5"),
-     *                                      @OA\Property(property="judger_id", type="int(11)", example="1"),
-     *                                      @OA\Property(property="name", type="string(128)", example="王裁判"),
-     *                                  )
-     *                              ),
-     *                          )
-     *                      ),
-
+     *              @OA\Property(property="data", type="object",
+     *                  @OA\Property(property="game_id", type="int(11)", example="1"),
+     *                  @OA\Property(property="name", type="string(128)", example="滑輪板街式賽_男子選手組"),
+     *                  @OA\Property(property="type", type="string(1)", example="7"),
+     *                  @OA\Property(property="content", type="string(1)", example="成人組比賽"),
+     *                  @OA\Property(property="date", type="string(10)", example="2022-05-05"),
+     *                  @OA\Property(property="round", type="string(1)", example="1~7(第幾輪評分)"),
+     *                  @OA\Property(property="players", type="array",
+     *                      @OA\Items(type="object",
+     *                          @OA\Property(property="player_id", type="int(11)", example="1"),
+     *                          @OA\Property(property="name", type="string(128)", example="王小明"),
+     *                          @OA\Property(property="unit", type="string(1)", example="國立台中一中"),
+     *                          @OA\Property(property="comment", type="string(1)", example="詳細備註"),
+     *                          @OA\Property(property="scores", type="array",
+     *                              @OA\Items(type="object",
+     *                                  @OA\Property(property="score_id", type="int(11)", example="1"),
+     *                                  @OA\Property(property="score", type="float(2,2)", example="8.5"),
+     *                                  @OA\Property(property="judger_id", type="int(11)", example="1"),
+     *                                  @OA\Property(property="name", type="string(128)", example="王裁判"),
+     *                              )
+     *                          ),
+     *                      )
      *                  ),
      *              ),
      *          ),
@@ -405,45 +402,52 @@ class frontController extends \core\PPP {
      * )
      */
     public function score_list() {
-        $data = '[
-            {
-              "game_id": 1,
-              "name": "滑輪板街式賽_男子選手組",
-              "type": 7,
-              "content": "成人組比賽",
-              "date": "2022-05-05",
-              "round": "1",
-              "players": [
-                {
-                  "player_id": 1,
-                  "name": "王小明",
-                  "unit": "國立台中一中",
-                  "comment": "詳細備註",
-                  "scores": [
-                    {"score_id": 1,"score": 8.5,"judger_id": 1,"name": "王裁判"},
-                    {"score_id": 2,"score": 1.5,"judger_id": 2,"name": "陳裁判"},
-                    {"score_id": 0,"score": 0,"judger_id": 3,"name": "張裁判"},
-                    {"score_id": 0,"score": 0,"judger_id": 4,"name": "林裁判"},
-                    {"score_id": 0,"score": 0,"judger_id": 5,"name": "梨裁判"}
-                  ]
-                },
-                {
-                  "player_id": 2,
-                  "name": "陳小明",
-                  "unit": "國立台中二中",
-                  "comment": "詳細備註",
-                  "scores": [
-                    {"score_id": 3,"score": 9.5,"judger_id": 1,"name": "王裁判"},
-                    {"score_id": 4,"score": 5.5,"judger_id": 2,"name": "陳裁判"},
-                    {"score_id": 0,"score": 0,"judger_id": 3,"name": "張裁判"},
-                    {"score_id": 0,"score": 0,"judger_id": 4,"name": "林裁判"},
-                    {"score_id": 0,"score": 0,"judger_id": 5,"name": "梨裁判"}
-                  ]
-                }
-              ]
-            }
-          ]';
-        json(new resModel(200, json_decode($data)));
+        if($game_id > 0) {
+            $database = new frontModel();
+            $data = $database->get_score_list(array('game_id' => $game_id));
+            json(new resModel(200, $data));
+        } else {
+            json(new resModel(400, '比賽編號不符合規則!'));
+        }
+        // $data = '[
+        //     {
+        //       "game_id": 1,
+        //       "name": "滑輪板街式賽_男子選手組",
+        //       "type": 7,
+        //       "content": "成人組比賽",
+        //       "date": "2022-05-05",
+        //       "round": "1",
+        //       "players": [
+        //         {
+        //           "player_id": 1,
+        //           "name": "王小明",
+        //           "unit": "國立台中一中",
+        //           "comment": "詳細備註",
+        //           "scores": [
+        //             {"score_id": 1,"score": 8.5,"judger_id": 1,"name": "王裁判"},
+        //             {"score_id": 2,"score": 1.5,"judger_id": 2,"name": "陳裁判"},
+        //             {"score_id": 0,"score": 0,"judger_id": 3,"name": "張裁判"},
+        //             {"score_id": 0,"score": 0,"judger_id": 4,"name": "林裁判"},
+        //             {"score_id": 0,"score": 0,"judger_id": 5,"name": "梨裁判"}
+        //           ]
+        //         },
+        //         {
+        //           "player_id": 2,
+        //           "name": "陳小明",
+        //           "unit": "國立台中二中",
+        //           "comment": "詳細備註",
+        //           "scores": [
+        //             {"score_id": 3,"score": 9.5,"judger_id": 1,"name": "王裁判"},
+        //             {"score_id": 4,"score": 5.5,"judger_id": 2,"name": "陳裁判"},
+        //             {"score_id": 0,"score": 0,"judger_id": 3,"name": "張裁判"},
+        //             {"score_id": 0,"score": 0,"judger_id": 4,"name": "林裁判"},
+        //             {"score_id": 0,"score": 0,"judger_id": 5,"name": "梨裁判"}
+        //           ]
+        //         }
+        //       ]
+        //     }
+        //   ]';
+        // json(new resModel(200, json_decode($data)));
     }
 
     /**
