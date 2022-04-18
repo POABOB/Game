@@ -117,7 +117,15 @@ class gameModel extends model {
                 'name' => $name,
                 'TotalScore' => 0
             );
-            $this->insert('Ranks', $ranks);
+            if($this->has('Ranks', array('game_id' => $para['game_id'], 'player_id' => $para['player_id']))) {
+                // 復原Ranks
+                $this->update('Ranks',
+                    array('hidden' => '0'),
+                    array('game_id' => $para['game_id'], 'player_id' => $para['player_id'])
+                );
+            } else {
+                $this->insert('Ranks', $ranks);
+            }
             $this->pdo->commit(); 
             return 0;
         }
@@ -148,7 +156,11 @@ class gameModel extends model {
         $this->delete($table,$where);
 
         // 刪除Ranks
-        $this->delete('Ranks', $where);
+        $this->update('Ranks',
+            array('hidden' => '1'),
+            $where
+        );
+
         $this->pdo->commit(); 
         return 0;
     }

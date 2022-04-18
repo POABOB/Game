@@ -44,16 +44,6 @@ class frontController extends \core\PPP {
             $database = new frontModel();
             $data = $database->get_rank_list();
 
-            if($data[0]) {
-              foreach ($data[1] as $key => $value) {
-                $data[1][$key]['score'] = json_decode($data[1][$key]['score']);
-                $data[0]['rank'][] = $data[1][$key];
-              }
-              $data = $data[0];
-            } else {
-              $data = null;
-            }
-
             json(new resModel(200, $data));
 
             // $data = '{

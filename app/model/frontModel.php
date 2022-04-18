@@ -16,13 +16,20 @@ class frontModel extends model {
 
             // 獲取該比賽排行
             $data[1] = $this->select($table, $para, $where);
-
-            return $data;
+            $type = intval($data[0]['type']);
+            foreach ($data[1] as $key => $value) {
+                $data[1][$key]['score'] = json_decode($data[1][$key]['score']);
+                $score_nums = count($data[1][$key]['score']);
+                for($i = $score_nums; $i <= $type; $i++) {
+                    $data[1][$key]['score'][] = null;
+                }
+                $data[0]['rank'][] = $data[1][$key];
+            }
+            $data = $data[0];
         } else {
-            $data[0] = false;
-            return $data;
+            $data = null;
         }
-
+        return $data;
     }
     // rank_list() END
 
