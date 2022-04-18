@@ -146,8 +146,22 @@ class frontModel extends model {
 
     // score_confirm() START
     public function score_confirm($where = array(), $table1 = 'Score', $table2 = 'Ranks') {
+        // 如果有update array，先更新
+        if(isset($where['update']) && count($where['update']) !== 0) {
+            foreach ($where['update'] as $key => $value) {
+                $this->update($table1, 
+                    array('score' => $where['update'][$key]['score']), 
+                    array('score_id' => $where['update'][$key]['score_id']), 
+                );
+            }
+        }
         $where['ORDER'] = 'score';
-        $score = $this->select($table1, '*', $where);
+        $score = $this->select($table1, '*', 
+            array(
+                'ORDER' => 'score',
+                'score_id' => $where['score_id']
+            )
+        );
 
         if(count($score) != 5) {
             // 判斷score_id是否5筆皆有效
@@ -211,7 +225,10 @@ class frontModel extends model {
                     array('rank_id ' => $rank['rank_id'])
                 );
                 // 更新Score，confirm它
-                $this->update($table1, array('confirm' => '1'), $where);
+                $this->update($table1, 
+                    array('confirm' => '1'),
+                    array('score_id' => $where['score_id']) 
+                );
 
                 $this->pdo->commit(); 
                 return 0;
