@@ -20,7 +20,7 @@ class frontModel extends model {
             foreach ($data[1] as $key => $value) {
                 $data[1][$key]['score'] = json_decode($data[1][$key]['score']);
                 $score_nums = count($data[1][$key]['score']);
-                for($i = $score_nums; $i <= $type; $i++) {
+                for($i = $score_nums + 1; $i <= $type; $i++) {
                     $data[1][$key]['score'][] = null;
                 }
                 $data[0]['rank'][] = $data[1][$key];
