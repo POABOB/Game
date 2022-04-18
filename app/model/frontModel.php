@@ -250,7 +250,7 @@ class frontModel extends model {
         foreach ($data[1] as $key => $value) {
             $scores = array_filter(
                 $data[2],
-                function($val) use ($data) {
+                function($val) use ($data, $key) {
                     return $val['player_id'] == $data[1][$key]['player_id'];
                 }
             );
@@ -288,6 +288,7 @@ class frontModel extends model {
             array('@round'), 
             array('game_id' => $where['game_id'], 'confirm' => '0')
         );
+        p($round);exit;
 
         // $data[1] = $this->select('PlayerInGame', 
         //     array('[><]Player' => array('player_id' => 'player_id')),

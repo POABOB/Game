@@ -401,7 +401,7 @@ class frontController extends \core\PPP {
      *      @OA\Response(response="403", description="Permission denied(如果JWT的權限不夠就會顯示)"),
      * )
      */
-    public function score_list() {
+    public function score_list($game_id) {
         if($game_id > 0) {
             $database = new frontModel();
             $data = $database->get_score_list(array('game_id' => $game_id));
