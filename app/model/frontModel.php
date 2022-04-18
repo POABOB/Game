@@ -8,15 +8,16 @@ class frontModel extends model {
     public function get_rank_list($para = array('score', 'player_id', 'name', 'TotalScore'), $where = array(), $table = 'Ranks') {
         // 獲取當前RankStatus
         $game_id = $this->get('RankStatus', 'game_id', array('RS_id' => 1));
-        $where = array(
-            'game_id' => $game_id,
-            'hidden' => '0'
-        );
+        $where = array('game_id' => $game_id);
         
         if($game_id) {
             // 獲取比賽
             $data[0] = $this->get('Game', array('game_id', 'name', 'type', 'content', 'date'), $where);
 
+            $where = array(
+                'game_id' => $game_id,
+                'hidden' => '0'
+            );
             // 獲取該比賽排行
             $data[1] = $this->select($table, $para, $where);
             $type = intval($data[0]['type']);
