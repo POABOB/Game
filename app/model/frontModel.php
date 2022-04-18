@@ -236,13 +236,8 @@ class frontModel extends model {
             ),
             array(
                 'Score.player_id',
-                // 'Score.player_name',
-                // 'Score.judger_id',
                 'Score.score',
-                // 'Score.type',
                 'Score.round',
-                // 'Player.unit', 
-                // 'Player.comment', 
             ),
             array(
                 'ORDER' => array('Score.player_id' => 'ASC'),
@@ -250,6 +245,32 @@ class frontModel extends model {
                 'Score.judger_id' => $where['judger_id'],
             )
         );
+
+        // 整理資料
+        foreach ($data[1] as $key => $value) {
+            $scores = array_filter(
+                $data[2],
+                function($val) use ($data) {
+                    return $val['player_id'] == $data[1][$key]['player_id'];
+                }
+            );
+
+            $score_length = count($scores);
+            $total_round = intval($data[0]['type']);
+            if($score_length > 0) {
+                array_push($data[1][$key]['scores'], $scores);
+                for($i = $score_length + 1; $i <= $total_round; $i++) {
+                    $data[1][$key]['scores'][] = array('score_id' => 0, 'scores' => 0, 'round' => (string)$i);
+                }
+            } else {
+                for($i = 1; $i <= $total_round; $i++) {
+                    $data[1][$key]['scores'][] = array('score_id' => 0, 'scores' => 0, 'round' => (string)$i);
+                }
+            }
+        }
+        $data[0]['players'] = $data[1];
+        $data = $data[0];
+
         return $data;
     }
     // game_detail() END

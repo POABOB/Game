@@ -160,7 +160,6 @@ class frontController extends \core\PPP {
      *                              @OA\Property(property="name", type="string(128)", example="王小明"),
      *                              @OA\Property(property="unit", type="string(1)", example="國立台中一中"),
      *                              @OA\Property(property="comment", type="string(1)", example="詳細備註"),
-     *                              @OA\Property(property="judger_id", type="int(11)", example="1"),
      *                              @OA\Property(property="scores", type="array",
      *                                  @OA\Items(type="object",
      *                                      @OA\Property(property="score_id", type="int(11)", example="1"),
@@ -208,7 +207,6 @@ class frontController extends \core\PPP {
         //           "name": "王小明",
         //           "unit": "國立台中一中",
         //           "comment": "詳細備註",
-        //           "judger_id": 1,
         //           "scores": [
         //             {"score_id": 1,"score": 8.5,"round": "1"},
         //             {"score_id": 2,"score": 1.5,"round": "2"},
@@ -224,7 +222,6 @@ class frontController extends \core\PPP {
         //           "name": "陳小明",
         //           "unit": "國立台中二中",
         //           "comment": "詳細備註",
-        //           "judger_id": 1,
         //           "scores": [
         //             {"score_id": 3,"score": 9.5,"round": "1"},
         //             {"score_id": 4,"score": 5.5,"round": "2"},
