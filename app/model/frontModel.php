@@ -84,6 +84,20 @@ class frontModel extends model {
     }
     // game_list() END
 
+    // score_game_list() START
+    public function score_game_list($para = array('game_id', 'name', 'type', 'content', 'date'), $where = array(), $table = 'Game') {
+        // 獲取當日後50筆比賽
+        $date = date('Y-m-d');
+        return $this->select($table, $para,
+            array(
+                'ORDER' => array('date' => 'ASC'),
+                'LIMIT' => 50,
+                'date[>=]' => $date,
+            )
+        );
+    }
+    // score_game_list() END
+
     // game_insert_score() START
     public function insert_score($para = array(), $table1 = 'Game', $table2 = 'Score') {
         
@@ -175,15 +189,25 @@ class frontModel extends model {
                     if(isset($rank['score'][1])) $totalScore += $rank['score'][1];
                 }
                 $rank['score'] = json_encode($rank['score'], true);
+                
+                $this->pdo->beginTransaction();
+                // 更新Rank
                 $this->update($table2,
                     array(
                         'score' => $rank['score'],
                         'totalScore' => $totalScore
-                    )
+                    ),
+                    array('rank_id ' => $rank['rank_id'])
                 );
+                // 更新Score，confirm它
+                $this->update($table1, array('confirm' => '1'), $where);
+
+                $this->pdo->commit(); 
                 return 0;
             }
         }
     }
     // score_confirm() END
+
+    
 }

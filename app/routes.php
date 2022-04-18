@@ -6,12 +6,12 @@ use core\common\auth;
 if(!isset($_SESSION['user'])) $_SESSION['user'] = false;
 
 
-// $router->get("/doc", function() { require(PPP . '/static/doc/index.html'); });
-// $router->get("/swagger", function() {
-//     $openapi = \OpenApi\Generator::scan([APP . '/controller']);
-//     header('Content-Type: application/json');
-//     echo $openapi->toJSON();
-// });
+$router->get("/doc", function() { require(PPP . '/static/doc/index.html'); });
+$router->get("/swagger", function() {
+    $openapi = \OpenApi\Generator::scan([APP . '/controller']);
+    header('Content-Type: application/json');
+    echo $openapi->toJSON();
+});
 
 $router->options('/.*', function() {});
 // 登入登出
@@ -26,7 +26,8 @@ $router->before('GET|POST', '/score.*', function() { auth::factory()->user1(); }
 $router->before('GET|POST', '/rank.*', function() { auth::factory()->user1(); });
 
 // 裁判長
-$router->get('/score/list', 'frontController@score_list');//
+$router->get('/score/game/list', 'frontController@score_game_list');
+$router->get('/score/list/(\d+)', 'frontController@score_list');//
 $router->post('/score/confirm', 'frontController@score_confirm');//
 $router->get('/rank/status', 'frontController@rank_status');
 $router->post('/rank/confirm', 'frontController@rank_confirm');

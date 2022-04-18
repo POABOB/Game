@@ -12,7 +12,7 @@ use core\lib\JWT;
 class frontController extends \core\PPP {
     /**
      * @OA\Get(
-     *     path="/api/f/rank/list", 
+     *     path="/api_test/f/rank/list", 
      *     tags={"前台"},
      *     summary="前台獲取排名顯示螢幕",
      *      @OA\Response(
@@ -46,6 +46,7 @@ class frontController extends \core\PPP {
 
             if($data[0]) {
               foreach ($data[1] as $key => $value) {
+                $data[1][$key]['score'] = json_decode($data[1][$key]['score']);
                 $data[0]['rank'][] = $data[1][$key];
               }
               $data = $data[0];
@@ -76,7 +77,7 @@ class frontController extends \core\PPP {
 
     /**
      * @OA\Get(
-     *     path="/api/game/list/{judger_id}", 
+     *     path="/api_test/game/list/{judger_id}", 
      *     tags={"前台"},
      *     summary="裁判獲取比賽列表",
      *     security={{"Authorization":{}}}, 
@@ -127,9 +128,9 @@ class frontController extends \core\PPP {
         // json(new resModel(200, json_decode($data)));
     }
 
-        /**
+    /**
      * @OA\Get(
-     *     path="/api/game/detail/{game_id}", 
+     *     path="/api_test/game/detail/{game_id}", 
      *     tags={"前台"},
      *     summary="裁判獲取比賽詳細資訊(選手、已評分資料)(獲取的scores以judger_id做分類)",
      *     security={{"Authorization":{}}}, 
@@ -179,14 +180,14 @@ class frontController extends \core\PPP {
      * )
      */
     public function game_detail($game_id) {
-        // if($game_id > 0) {
-        //     $database = new frontModel();
-        //     $data = $database->get_game();
+        if($game_id > 0) {
+            $database = new frontModel();
+            $data = $database->get_game();
 
-        //     json(new resModel(200, $data));
-        // } else {
-        //     json(new resModel(400, '獲取失敗'));
-        // }
+            json(new resModel(200, $data));
+        } else {
+            json(new resModel(400, '比賽編號不符合規則!'));
+        }
         $data = '[
             {
               "game_id": 1,
@@ -235,7 +236,7 @@ class frontController extends \core\PPP {
 
     /**
      * @OA\Post(
-     *     path="/api/game/insert/score", 
+     *     path="/api_test/game/insert/score", 
      *     tags={"前台"},
      *     summary="裁判評分選手",
      *     security={{"Authorization":{}}}, 
@@ -315,10 +316,51 @@ class frontController extends \core\PPP {
 
     /**
      * @OA\Get(
-     *     path="/api/score/list", 
+     *     path="/api_test/score/game/list", 
+     *     tags={"前台"},
+     *     summary="裁判長獲取比賽列表",
+     *     security={{"Authorization":{}}}, 
+     *      @OA\Response(
+     *          response="200", 
+     *          description="獲取比賽列表",
+     *          @OA\JsonContent(type="object",
+     *              @OA\Property(property="code", type="integer", example=200),
+     *              @OA\Property(property="message", example="null"),
+     *              @OA\Property(property="data", type="array",
+     *                  @OA\Items(type="object",
+     *                      @OA\Property(property="game_id", type="int(11)", example="1"),
+     *                      @OA\Property(property="name", type="string(128)", example="滑輪板街式賽_男子選手組"),
+     *                      @OA\Property(property="type", type="string(1)", example="7"),
+     *                      @OA\Property(property="content", type="string(1)", example="成人組比賽"),
+     *                      @OA\Property(property="date", type="string(10)", example="2022-05-05"),
+     *                  ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response="400", description="獲取失敗"),
+     *      @OA\Response(response="403", description="Permission denied(如果JWT的權限不夠就會顯示)"),
+     * )
+     */
+    public function score_game_list() {
+      $database = new frontModel();
+      $data = $database->score_game_list();
+
+      json(new resModel(200, $data));
+    }
+
+    /**
+     * @OA\Get(
+     *     path="/api_test/score/list/{game_id}", 
      *     tags={"前台"},
      *     summary="裁判長獲取比賽評分資料(獲取的scores以round做分類)",
      *     security={{"Authorization":{}}}, 
+     *     @OA\Parameter(
+     *          name="game_id",
+     *          description="比賽id",
+     *          in = "path",
+     *          required=true,
+     *          @OA\Schema(type="integer") 
+     *      ),
      *      @OA\Response(
      *          response="200", 
      *          description="裁判長獲取比賽評分資料",
@@ -396,7 +438,7 @@ class frontController extends \core\PPP {
 
     /**
      * @OA\Post(
-     *     path="/api/score/confirm", 
+     *     path="/api_test/score/confirm", 
      *     tags={"前台"},
      *     summary="裁判長確認評分資料(將score_id回傳，後端自動將分數整理成rank，必須是同一round的才可以確認!!!)",
      *     security={{"Authorization":{}}}, 
@@ -448,7 +490,7 @@ class frontController extends \core\PPP {
 
     /**
      * @OA\Get(
-     *     path="/api/rank/status", 
+     *     path="/api_test/rank/status", 
      *     tags={"前台"},
      *     summary="裁判長或ADMIN查看現在排行榜是哪場比賽",
      *     security={{"Authorization":{}}}, 
@@ -517,7 +559,7 @@ class frontController extends \core\PPP {
 
     /**
      * @OA\Post(
-     *     path="/api/rank/confirm", 
+     *     path="/api_test/rank/confirm", 
      *     tags={"前台"},
      *     summary="裁判長或ADMIN決定排行榜顯示哪場比賽",
      *     security={{"Authorization":{}}}, 

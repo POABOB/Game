@@ -29,7 +29,7 @@ use core\lib\JWT;
 class loginController extends \core\PPP {
     /**
      * @OA\Post(
-     *      path="/api/login/admin", 
+     *      path="/api_test/login/admin", 
      *      tags={"登入登出"},
      *      summary="後台登入",
      *      @OA\RequestBody(
@@ -91,7 +91,7 @@ class loginController extends \core\PPP {
 
     /**
      * @OA\Post(
-     *      path="/api/login", 
+     *      path="/api_test/login", 
      *      tags={"登入登出"},
      *      summary="前台裁判登入",
      *      @OA\RequestBody(
@@ -155,7 +155,7 @@ class loginController extends \core\PPP {
 
     /**
      * @OA\Get(
-     *      path="/api/logout", 
+     *      path="/api_test/logout", 
      *      tags={"登入登出"},
      *      summary="登出",
      *      @OA\Response(
