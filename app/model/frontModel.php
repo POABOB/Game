@@ -229,20 +229,12 @@ class frontModel extends model {
                 'PlayerInGame.game_id' => $where['game_id']
             )
         );
-        $data[2] = $this->select('PlayerInGame', 
+        $data[2] = $this->select('Score', 
+            array('player_id', 'score', 'round'),
             array(
-                '[><]Score' => array('game_id' => 'game_id'),
-                '[><]Player' => array('player_id' => 'player_id')
-            ),
-            array(
-                'Score.player_id',
-                'Score.score',
-                'Score.round',
-            ),
-            array(
-                'ORDER' => array('Score.player_id' => 'ASC'),
-                'Score.game_id' => $where['game_id'],
-                'Score.judger_id' => $where['judger_id'],
+                'ORDER' => array('player_id' => 'ASC'),
+                'game_id' => $where['game_id'],
+                'judger_id' => $where['judger_id'],
             )
         );
 
