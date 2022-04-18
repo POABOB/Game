@@ -250,6 +250,7 @@ class frontModel extends model {
             $score_length = count($scores);
             $total_round = intval($data[0]['type']);
             if($score_length > 0) {
+                $scores = array_values($scores);
                 $data[1][$key]['scores'] = $scores;
                 for($i = $score_length + 1; $i <= $total_round; $i++) {
                     $data[1][$key]['scores'][] = array('score_id' => 0, 'score' => 0, 'round' => (string)$i);
