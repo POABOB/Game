@@ -304,10 +304,10 @@ class frontModel extends model {
                     'confirm' => '1'
                 )
             );
-            if($distinct_newest_round == null) {
+            if($distinct_newest_confirm_round == null) {
                 $data[0]['round'] = "1";
             } else {
-                $data[0]['round'] = $distinct_newest_round['round'];
+                $data[0]['round'] = $distinct_newest_confirm_round['round'];
             }
         } else {
             $data[0]['round'] = $distinct_lowest_not_confirm_round['round'];
