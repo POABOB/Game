@@ -241,7 +241,7 @@ class frontModel extends model {
             )
         );
         $data[2] = $this->select('Score', 
-            array('player_id', 'score', 'round'),
+            array('player_id', 'score_id', 'score', 'round'),
             array(
                 'ORDER' => array('player_id' => 'ASC'),
                 'game_id' => $where['game_id'],
@@ -264,11 +264,11 @@ class frontModel extends model {
                 $scores = array_values($scores);
                 $data[1][$key]['scores'] = $scores;
                 for($i = $score_length + 1; $i <= $total_round; $i++) {
-                    $data[1][$key]['scores'][] = array('score_id' => 0, 'score' => 0, 'round' => (string)$i);
+                    $data[1][$key]['scores'][] = array('player_id' => $data[1][$key]['player_id'], 'score_id' => 0, 'score' => 0, 'round' => (string)$i);
                 }
             } else {
                 for($i = 1; $i <= $total_round; $i++) {
-                    $data[1][$key]['scores'][] = array('score_id' => 0, 'score' => 0, 'round' => (string)$i);
+                    $data[1][$key]['scores'][] = array('player_id' => $data[1][$key]['player_id'], 'score_id' => 0, 'score' => 0, 'round' => (string)$i);
                 }
             }
         }
@@ -286,68 +286,88 @@ class frontModel extends model {
             array('game_id', 'name', 'type', 'content', 'date'), 
             array('game_id' => $where['game_id'])
         );
-
+    
         // 獲取最低round
-        $round = $this->select('Score', 
+        $distinct_lowest_not_confirm_round = $this->get('Score', 
             array('@round'), 
             array('game_id' => $where['game_id'], 'confirm' => '0')
         );
-        p($round);exit;
 
-        // $data[1] = $this->select('PlayerInGame', 
-        //     array('[><]Player' => array('player_id' => 'player_id')),
-        //     array(
-        //         'Player.player_id',
-        //         'Player.name',
-        //         'Player.unit', 
-        //         'Player.comment', 
-        //     ),
-        //     array(
-        //         'ORDER' => array('Player.player_id' => 'ASC'),
-        //         'PlayerInGame.game_id' => $where['game_id']
-        //     )
-        // );
-        // $data[2] = $this->select('PlayerInGame', 
-        //     array(
-        //         '[><]Score' => array('game_id' => 'game_id'),
-        //         '[><]Player' => array('player_id' => 'player_id')
-        //     ),
-        //     array(
-        //         'Score.player_id',
-        //         'Score.score',
-        //         'Score.round',
-        //     ),
-        //     array(
-        //         'ORDER' => array('Score.player_id' => 'ASC'),
-        //         'Score.game_id' => $where['game_id'],
-        //         'Score.round' => $round,
-        //     )
-        // );
+        if($distinct_lowest_not_confirm_round == null) {
+            // 目前沒有需要確認的ROUND
+            // 抓最新的round
+            $distinct_newest_confirm_round = $this->get('Score', 
+                array('@round'), 
+                array(
+                    'ORDER' => array('score_id' => 'DESC'), 
+                    'game_id' => $where['game_id'], 
+                    'confirm' => '1'
+                )
+            );
+            if($distinct_newest_round == null) {
+                $data[0]['round'] = "1";
+            } else {
+                $data[0]['round'] = $distinct_newest_round['round'];
+            }
+            $data[0]['players'] = array();
+            return $data[0];
+        } else {
+            $data[0]['round'] = $distinct_lowest_not_confirm_round['round'];
+            
+            // 獲取選手
+            $data[1] = $this->select('PlayerInGame', 
+                array('[><]Player' => array('player_id' => 'player_id')),
+                array(
+                    'Player.player_id',
+                    'Player.name',
+                    'Player.unit', 
+                    'Player.comment', 
+                ),
+                array(
+                    'ORDER' => array('Player.player_id' => 'ASC'),
+                    'PlayerInGame.game_id' => $where['game_id']
+                )
+            );
+            $data[2] = $this->select('Score', 
+                array('player_id', 'score_id', 'score', 'judger_id', 'judger_name'),
+                array(
+                    'ORDER' => array('player_id' => 'ASC'),
+                    'game_id' => $where['game_id'],
+                    'round' => $distinct_lowest_not_confirm_round['round'],
+                )
+            );
 
-        // // 整理資料
-        // foreach ($data[1] as $key => $value) {
-        //     $scores = array_filter(
-        //         $data[2],
-        //         function($val) use ($data) {
-        //             return $val['player_id'] == $data[1][$key]['player_id'];
-        //         }
-        //     );
+            // 整理資料
+            foreach ($data[1] as $key => $value) {
+                $scores = array_filter(
+                    $data[2],
+                    function($val) use ($data, $key) {
+                        return $val['player_id'] == $data[1][$key]['player_id'];
+                    }
+                );
 
-        //     $score_length = count($scores);
-        //     $total_round = intval($data[0]['type']);
-        //     if($score_length > 0) {
-        //         array_push($data[1][$key]['scores'], $scores);
-        //         for($i = $score_length + 1; $i <= $total_round; $i++) {
-        //             $data[1][$key]['scores'][] = array('score_id' => 0, 'scores' => 0, 'round' => (string)$i);
-        //         }
-        //     } else {
-        //         for($i = 1; $i <= $total_round; $i++) {
-        //             $data[1][$key]['scores'][] = array('score_id' => 0, 'scores' => 0, 'round' => (string)$i);
-        //         }
-        //     }
-        // }
-        // $data[0]['players'] = $data[1];
-        // $data = $data[0];
+                $score_length = count($scores);
+                $total_round = intval($data[0]['type']);
+                if($score_length > 0) {
+                    $scores = array_values($scores);
+                    $data[1][$key]['scores'] = $scores;
+                    for($i = $score_length + 1; $i <= 5; $i++) {
+                        $data[1][$key]['scores'][] = array('player_id' => $data[1][$key]['player_id'], 'score_id' => 0, 'score' => 0, 'judger_id' => 0, 'judger_name' => '');
+                    }
+                } else {
+                    for($i = 1; $i <= 5; $i++) {
+                        $data[1][$key]['scores'][] = array('player_id' => $data[1][$key]['player_id'], 'score_id' => 0, 'score' => 0, 'judger_id' => 0, 'judger_name' => '');
+                    }
+                }
+            }
+            $data[0]['players'] = $data[1];
+            $data = $data[0];
+        }
+
+
+        
+
+
 
         return $data;
     }

@@ -452,6 +452,12 @@ class frontController extends \core\PPP {
      *              @OA\Schema(
      *                  required={"score_id"},
      *                  @OA\Property(property="score_id", type="int", example="[1,2,3,4,5]"),
+     *                  @OA\Property(property="update", type="array", 
+     *                    @OA\Items(type="object",
+     *                      @OA\Property(property="score_id", type="int", example="1"),
+     *                      @OA\Property(property="score", type="string(4)", example="8.5"),
+     *                    )
+     *                  ),
      *              )
      *          )
      *      ),
