@@ -356,7 +356,7 @@ class frontController extends \core\PPP {
      *          @OA\Schema(type="integer") 
      *      ),
      *      @OA\Parameter(
-     *          name="rounf",
+     *          name="round",
      *          description="第N輪",
      *          in = "path",
      *          required=true,
