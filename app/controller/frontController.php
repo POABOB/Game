@@ -360,7 +360,7 @@ class frontController extends \core\PPP {
      *          description="第N輪",
      *          in = "path",
      *          required=true,
-     *          @OA\Schema(type="string(1)") 
+     *          @OA\Schema(type="integer") 
      *      ),
      *      @OA\Response(
      *          response="200", 
