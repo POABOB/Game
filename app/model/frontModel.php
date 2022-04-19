@@ -305,6 +305,9 @@ class frontModel extends model {
         );
 
         $data[0]['round'] = $where['round'];
+        if(intval($data[0]['round']) > intval($data[0]['type'])) {
+            return 1;
+        }
     
         // // 獲取最低round
         // $distinct_lowest_not_confirm_round = $this->get('Score', 

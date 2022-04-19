@@ -403,7 +403,11 @@ class frontController extends \core\PPP {
         if($game_id > 0 || !isset($round)) {
             $database = new frontModel();
             $data = $database->get_score_list(array('game_id' => $game_id, 'round' => (string)$round));
-            json(new resModel(200, $data));
+            if($data == 1) {
+              json(new resModel(400, '輪數不可以大於該場比賽!'));
+            } else {
+              json(new resModel(200, $data));
+            }
         } else {
             json(new resModel(400, '比賽編號或輪數不符合規則!'));
         }
