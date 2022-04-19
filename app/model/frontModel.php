@@ -303,32 +303,34 @@ class frontModel extends model {
             array('game_id', 'name', 'type', 'content', 'date'), 
             array('game_id' => $where['game_id'])
         );
-    
-        // 獲取最低round
-        $distinct_lowest_not_confirm_round = $this->get('Score', 
-            array('@round'), 
-            array('game_id' => $where['game_id'], 'confirm' => '0')
-        );
 
-        if($distinct_lowest_not_confirm_round == null) {
-            // 目前沒有需要確認的ROUND
-            // 抓最新的round
-            $distinct_newest_confirm_round = $this->get('Score', 
-                array('@round'), 
-                array(
-                    'ORDER' => array('score_id' => 'DESC'), 
-                    'game_id' => $where['game_id'], 
-                    'confirm' => '1'
-                )
-            );
-            if($distinct_newest_confirm_round == null) {
-                $data[0]['round'] = "1";
-            } else {
-                $data[0]['round'] = $distinct_newest_confirm_round['round'];
-            }
-        } else {
-            $data[0]['round'] = $distinct_lowest_not_confirm_round['round'];
-        }
+        $data[0]['round'] = $where['round'];
+    
+        // // 獲取最低round
+        // $distinct_lowest_not_confirm_round = $this->get('Score', 
+        //     array('@round'), 
+        //     array('game_id' => $where['game_id'], 'confirm' => '0')
+        // );
+
+        // if($distinct_lowest_not_confirm_round == null) {
+        //     // 目前沒有需要確認的ROUND
+        //     // 抓最新的round
+        //     $distinct_newest_confirm_round = $this->get('Score', 
+        //         array('@round'), 
+        //         array(
+        //             'ORDER' => array('score_id' => 'DESC'), 
+        //             'game_id' => $where['game_id'], 
+        //             'confirm' => '1'
+        //         )
+        //     );
+        //     if($distinct_newest_confirm_round == null) {
+        //         $data[0]['round'] = "1";
+        //     } else {
+        //         $data[0]['round'] = $distinct_newest_confirm_round['round'];
+        //     }
+        // } else {
+        //     $data[0]['round'] = $distinct_lowest_not_confirm_round['round'];
+        // }
 
         
         // 獲取選手
@@ -341,7 +343,7 @@ class frontModel extends model {
                 'Player.comment', 
             ),
             array(
-                'ORDER' => array('Player.player_id' => 'ASC'),
+                // 'ORDER' => array('Player.player_id' => 'ASC'),
                 'PlayerInGame.game_id' => $where['game_id']
             )
         );
@@ -349,7 +351,7 @@ class frontModel extends model {
         $data[2] = $this->select('Score', 
             array('player_id', 'score_id', 'score', 'judger_id', 'judger_name'),
             array(
-                'ORDER' => array('player_id' => 'ASC'),
+                // 'ORDER' => array('player_id' => 'ASC'),
                 'game_id' => $where['game_id'],
                 'round' => $data[0]['round'],
                 'confirm' => '0'
@@ -361,9 +363,36 @@ class frontModel extends model {
             array('Judger.judger_id','Judger.name',),
             array(
                 'ORDER' => array('Judger.judger_id' => 'ASC'),
-                'JudgerInGame.game_id' => $where['game_id']
+                'JudgerInGame.game_id' => $where['game_id'],
+                'LIMIT' => 5
             )
         );
+
+        // 判斷該輪是否可提交
+        $data[4] = $this->select('Ranks', array('rank_id', 'score'), array('game_id' => $where['game_id'], 'hidden' => '0'));
+
+        $need_confirm = false;
+        $int_round = intval($data[0]['round']);
+        foreach ($data[4] as $key => $value) {
+            $data[4][$key]['score'] = json_decode($data[4][$key]['score']);
+            if($int_round == 1) {
+                if(!isset($data[4][$key]['score'][$int_round])) {
+                    $need_confirm = true;
+                    break;
+                }
+            } else {
+                if(!isset($data[4][$key]['score'][$int_round])) {
+                    $need_confirm = true;
+                }
+
+                if(!isset($data[4][$key]['score'][$int_round - 1])) {
+                    $need_confirm = false;
+                    break;
+                }
+            }
+        }
+
+        $data[0]['need_confirm'] = $need_confirm;
 
         // 整理資料
         foreach ($data[1] as $key => $value) {
@@ -379,7 +408,6 @@ class frontModel extends model {
             if($score_length > 0) {
                 $data[1][$key]['confirm'] = 0;
                 $scores = array_values($scores);
-                // $data[1][$key]['scores'] = $scores;
                 for($i = 1; $i <= 5; $i++) {
                     $d = array_find(
                         $scores,

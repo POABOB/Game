@@ -344,7 +344,7 @@ class frontController extends \core\PPP {
 
     /**
      * @OA\Get(
-     *     path="/api_test/score/list/{game_id}", 
+     *     path="/api_test/score/list/{game_id}/round/{round}", 
      *     tags={"前台"},
      *     summary="裁判長獲取比賽評分資料(獲取的scores以round做分類)",
      *     security={{"Authorization":{}}}, 
@@ -354,6 +354,13 @@ class frontController extends \core\PPP {
      *          in = "path",
      *          required=true,
      *          @OA\Schema(type="integer") 
+     *      ),
+     *      @OA\Parameter(
+     *          name="rounf",
+     *          description="第N輪",
+     *          in = "path",
+     *          required=true,
+     *          @OA\Schema(type="string(1)") 
      *      ),
      *      @OA\Response(
      *          response="200", 
@@ -368,6 +375,7 @@ class frontController extends \core\PPP {
      *                  @OA\Property(property="content", type="string(1)", example="成人組比賽"),
      *                  @OA\Property(property="date", type="string(10)", example="2022-05-05"),
      *                  @OA\Property(property="round", type="string(1)", example="1~7(第幾輪評分)"),
+     *                  @OA\Property(property="nedd_confirm", type="boolean", example="true"),
      *                  @OA\Property(property="players", type="array",
      *                      @OA\Items(type="object",
      *                          @OA\Property(property="player_id", type="int(11)", example="1"),
@@ -391,13 +399,13 @@ class frontController extends \core\PPP {
      *      @OA\Response(response="403", description="Permission denied(如果JWT的權限不夠就會顯示)"),
      * )
      */
-    public function score_list($game_id) {
-        if($game_id > 0) {
+    public function score_list($game_id, $round) {
+        if($game_id > 0 || !isset($round)) {
             $database = new frontModel();
-            $data = $database->get_score_list(array('game_id' => $game_id));
+            $data = $database->get_score_list(array('game_id' => $game_id, 'round' => (string)$round));
             json(new resModel(200, $data));
         } else {
-            json(new resModel(400, '比賽編號不符合規則!'));
+            json(new resModel(400, '比賽編號或輪數不符合規則!'));
         }
         // $data = '[
         //     {

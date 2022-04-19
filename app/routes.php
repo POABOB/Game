@@ -27,7 +27,7 @@ $router->before('GET|POST', '/rank.*', function() { auth::factory()->user1(); })
 
 // 裁判長
 $router->get('/score/game/list', 'frontController@score_game_list');
-$router->get('/score/list/(\d+)', 'frontController@score_list');//
+$router->get('/score/list/(\d+)/round/(\d+)', 'frontController@score_list');//
 $router->post('/score/confirm', 'frontController@score_confirm');//
 $router->get('/rank/status', 'frontController@rank_status');
 $router->post('/rank/confirm', 'frontController@rank_confirm');
