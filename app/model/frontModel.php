@@ -384,7 +384,7 @@ class frontModel extends model {
                     break;
                 }
             } else {
-                if(!isset($data[4][$key]['score'][$int_round] - 1)) {
+                if(!isset($data[4][$key]['score'][$int_round - 1])) {
                     $need_confirm = true;
                 }
 
