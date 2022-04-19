@@ -167,7 +167,7 @@ class frontModel extends model {
             // 判斷score_id是否5筆皆有效
             return 3;
         }else {
-            $newScore = round(($score[1]['score'] + $score[2]['score'] + $score[3]['score']) / 3, 1);
+            $newScore = round(($score[1]['score'] + $score[2]['score'] + $score[3]['score']) / 3, 2);
 
             $rank = $this->get($table2, '*',
                 array(

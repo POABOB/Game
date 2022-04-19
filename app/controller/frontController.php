@@ -284,7 +284,7 @@ class frontController extends \core\PPP {
           array(
             '比賽編號' => array('required', 'maxLen' => 11),
             '選手編號' => array('required', 'maxLen' => 11),
-            '分數' => array('required', 'maxLen' => 5),
+            '分數' => array('required', 'maxLen' => 10),
             'ROUND' => array('required', 'maxLen' => 1)
           )
       );
