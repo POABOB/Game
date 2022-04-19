@@ -379,16 +379,16 @@ class frontModel extends model {
         foreach ($data[4] as $key => $value) {
             $data[4][$key]['score'] = json_decode($data[4][$key]['score']);
             if($int_round == 1) {
-                if(!isset($data[4][$key]['score'][$int_round])) {
+                if(!isset($data[4][$key]['score'][$int_round - 1])) {
                     $need_confirm = true;
                     break;
                 }
             } else {
-                if(!isset($data[4][$key]['score'][$int_round])) {
+                if(!isset($data[4][$key]['score'][$int_round] - 1)) {
                     $need_confirm = true;
                 }
 
-                if(!isset($data[4][$key]['score'][$int_round - 1])) {
+                if(!isset($data[4][$key]['score'][$int_round - 2])) {
                     $need_confirm = false;
                     break;
                 }
