@@ -406,7 +406,8 @@ class frontModel extends model {
                     array(
                         'game_id' => $where['game_id'],
                         'round' => $data[0]['round'],
-                        'confirm' => '1'
+                        'confirm' => '1',
+                        'player_id' => $data[1][$key]['player_id'], 
                     )
                 );
                 if(count($confirm_data) != 0) {
