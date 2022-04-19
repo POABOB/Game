@@ -429,8 +429,9 @@ class frontModel extends model {
         }
         $data[0]['players'] = $data[1];
         $data = $data[0];
-
-        return $data;
+        $data[1] = $data[3]
+        $return = array($data[0], $data[3]);
+        return $return;
     }
     // score_list() END
 }
