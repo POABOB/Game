@@ -86,7 +86,7 @@ class frontModel extends model {
                 $table1.'.date'
             ),
             array(
-                'ORDER' => array($table1.'.date' => 'ASC'),
+                'ORDER' => array($table1.'.date' => 'ASC', "game_id" => "DESC"),
                 'LIMIT' => 50,
                 $table1.'.date[>=]' => $date,
                 $table2.'.judger_id' => $where['judger_id'],
@@ -101,7 +101,7 @@ class frontModel extends model {
         $date = date('Y-m-d');
         return $this->select($table, $para,
             array(
-                'ORDER' => array('date' => 'ASC'),
+                'ORDER' => array('date' => 'ASC', , "game_id" => "DESC"),
                 'LIMIT' => 50,
                 'date[>=]' => $date,
             )
