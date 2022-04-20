@@ -203,26 +203,30 @@ class frontModel extends model {
                             }
                         }
                     } else if(count($rank['score']) == 6) {
-                        if($key <= 2) {
-                            if(isset($rank['score'][1]) && $rank['score'][1] > $rank['score'][0]) {
-                                $totalScore = $rank['score'][1];
+                        foreach ($rank['score'] as $key => $value) {
+                            if($key <= 2) {
+                                if(isset($rank['score'][1]) && $rank['score'][1] > $rank['score'][0]) {
+                                    $totalScore = $rank['score'][1];
+                                } else {
+                                    $totalScore = $rank['score'][0];
+                                }
                             } else {
-                                $totalScore = $rank['score'][0];
+                                $totalScore += $rank['score'][$key];
                             }
-                        } else {
-                            $totalScore += $rank['score'][$key];
                         }
                         $tmp = array_slice($rank['score'], -4);
                         $totalScore -= min($tmp);
                     } else if(count($rank['score']) == 7) {
-                        if($key <= 2) {
-                            if(isset($rank['score'][1]) && $rank['score'][1] > $rank['score'][0]) {
-                                $totalScore = $rank['score'][1];
+                        foreach ($rank['score'] as $key => $value) {
+                            if($key <= 2) {
+                                if(isset($rank['score'][1]) && $rank['score'][1] > $rank['score'][0]) {
+                                    $totalScore = $rank['score'][1];
+                                } else {
+                                    $totalScore = $rank['score'][0];
+                                }
                             } else {
-                                $totalScore = $rank['score'][0];
+                                $totalScore += $rank['score'][$key];
                             }
-                        } else {
-                            $totalScore += $rank['score'][$key];
                         }
                         $tmp = array_slice($rank['score'], -5);
                         asort($tmp);
