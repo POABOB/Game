@@ -224,11 +224,19 @@ class frontModel extends model {
                     ),
                     array('rank_id ' => $rank['rank_id'])
                 );
+                if($this->error) {
+                    $this->pdo->rollBack();
+                    return 4;
+                }
                 // 更新Score，confirm它
                 $this->update($table1, 
                     array('confirm' => '1'),
                     array('score_id' => $where['score_id']) 
                 );
+                if($this->error) {
+                    $this->pdo->rollBack();
+                    return 4;
+                }
 
                 $this->pdo->commit(); 
                 return 0;
