@@ -10,6 +10,54 @@ use core\lib\JWT;
  *
  */
 class frontController extends \core\PPP {
+          /**
+     * @OA\Get(
+     *     path="/api_test/f/rank/{game_id}", 
+     *     tags={"前台"},
+     *     summary="查看比賽歷史排行",
+     *     @OA\Parameter(
+     *          name="game_id",
+     *          description="比賽id",
+     *          in = "path",
+     *          required=true,
+     *          @OA\Schema(type="integer") 
+     *      ),
+     *      @OA\Response(
+     *          response="200", 
+     *          description="查看比賽歷史排行",
+     *          @OA\JsonContent(type="object",
+     *              @OA\Property(property="code", type="integer", example=200),
+     *              @OA\Property(property="message", example="null"),
+     *              @OA\Property(property="data", type="object",
+     *                      @OA\Property(property="game_id", type="int(11)", example="1"),
+     *                      @OA\Property(property="name", type="string(128)", example="滑輪板街式賽_男子選手組"),
+     *                      @OA\Property(property="type", type="string(1)", example="7"),
+     *                      @OA\Property(property="rank", type="array",
+     *                          @OA\Items(type="object",
+     *                              @OA\Property(property="player_id", type="int(11)", example="1"),
+     *                              @OA\Property(property="name", type="string(128)", example="王小明"),
+     *                              @OA\Property(property="score", type="int", example="[7,6,5,2,1,8,8]"),
+     *                              @OA\Property(property="totalScore", type="tinyint(3)", example="28"),
+     *                          )
+     *                      ),
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(response="400", description="獲取失敗"),
+     *      @OA\Response(response="403", description="Permission denied"),
+     * )
+     */
+    public function get_rank($game_id) {
+        if($game_id > 0) {
+          $database = new frontModel();
+          $data = $database->get_rank_list(array('game_id' => $game_id));
+
+          json(new resModel(200, $data));
+      } else {
+          json(new resModel(400, '比賽編號不符合規則!'));
+      }
+
+    }
     /**
      * @OA\Get(
      *     path="/api_test/f/rank/list", 

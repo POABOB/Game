@@ -737,18 +737,22 @@ export default {
     InsertJudger(judger_id) {
       this.$confirm(`確定要新增到該比賽嗎？`)
         .then(() => {
-          const form = {
-            judger_id: judger_id,
-            game_id: this.game.game_id
-          }
-          insertGameJudger(form).then(res => {
-            if (res.code === 200) {
-              this.resSuccess(res.message)
-              this.getJudger()
-            } else {
-              this.resError(res.message)
+          if(this.JudgerInGame.length < 5) {
+            const form = {
+              judger_id: judger_id,
+              game_id: this.game.game_id
             }
-          })
+            insertGameJudger(form).then(res => {
+              if (res.code === 200) {
+                this.resSuccess(res.message)
+                this.getJudger()
+              } else {
+                this.resError(res.message)
+              }
+            })
+          } else {
+            this.resError('裁判新增不可超過五位!')
+          }
         }).catch(() => {
         })
     },

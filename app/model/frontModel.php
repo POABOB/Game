@@ -5,10 +5,14 @@ use core\lib\model;
 class frontModel extends model {
     
     // rank_list() START
-    public function get_rank_list($para = array('score', 'player_id', 'name', 'TotalScore'), $where = array(), $table = 'Ranks') {
-        // 獲取當前RankStatus
-        $game_id = $this->get('RankStatus', 'game_id', array('RS_id' => 1));
-        $where = array('game_id' => $game_id);
+    public function get_rank_list($where = array(), $para = array('score', 'player_id', 'name', 'TotalScore'), $table = 'Ranks') {
+        if(count($where) == 0) {
+            // 獲取當前RankStatus
+            $game_id = $this->get('RankStatus', 'game_id', array('RS_id' => 1));
+            $where = array('game_id' => $game_id);
+        } else {
+            $game_id = $where['game_id'];
+        }
         
         if($game_id) {
             // 獲取比賽

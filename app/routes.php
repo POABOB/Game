@@ -20,6 +20,7 @@ $router->post('/login/admin', 'loginController@admin_login');
 $router->get('/logout', 'loginController@logout');
 
 $router->get('/f/rank/list', 'frontController@rank_list');
+$router->get('/f/rank/(\d+)', 'frontController@get_rank');
 
 // 以下需要JWT驗證
 $router->before('GET|POST', '/score.*', function() { auth::factory()->user1(); });
@@ -66,6 +67,8 @@ $router->post('/admin/game/player', 'gameController@insert_player');
 $router->post('/admin/game/judger', 'gameController@insert_judger');
 $router->delete('/admin/game/player', 'gameController@delete_player');
 $router->delete('/admin/game/judger', 'gameController@delete_judger');
+
+
 //info OK
 $router->get('/info', function() { auth::factory()->user_info('Session 過期，請重新再登入'); });
 
