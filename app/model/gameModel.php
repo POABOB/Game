@@ -32,8 +32,8 @@ class gameModel extends model {
                 'ORDER' => array('JudgerInGame.judger_id' => 'DESC'),
             )
         );
-        $data[3] = $this->select('Player', array('player_id', 'name', 'unit'), array('hidden' => '0'));
-        $data[4] = $this->select('Judger', array('judger_id', 'name', 'ID', 'right'), array('hidden' => '0', 'right' => '0'));
+        $data[3] = $this->select('Player', array('player_id', 'name', 'unit'), array('hidden' => '0', 'ORDER' => array('player_id' => 'DESC')));
+        $data[4] = $this->select('Judger', array('judger_id', 'name', 'ID', 'right'), array('hidden' => '0', 'right' => '0', 'ORDER' => array('judger_id' => 'DESC')));
 
         return $data;
     }
