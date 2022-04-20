@@ -39,7 +39,7 @@ class frontModel extends model {
 
     // rank_status() START
     public function get_rank_status($para = '*', $where = array(), $table = 'Game') {
-        $where = array('hidden' => '0');
+        $where = array('hidden' => '0', 'ORDER' => array('game_id' => 'DESC'));
         
         $data['games'] = $this->select($table, $para, $where);
 
