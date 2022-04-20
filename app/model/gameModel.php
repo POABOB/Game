@@ -8,15 +8,15 @@ class gameModel extends model {
         $where = array('hidden' => '0', 'ORDER' => array('game_id' => 'DESC'));
         $data[0] = $this->select($table, $para, $where);
         // PLAYERINGAME
-        $data[1] = $this->select('Player', 
-            array('[><]PlayerInGame'=> array('player_id' => 'player_id')),
+        $data[1] = $this->select('PlayerInGame', 
+            array('[><]Player'=> array('player_id' => 'player_id')),
             array(
                 'PlayerInGame.game_id',
                 'Player.player_id',
                 'Player.name',
                 'Player.unit',
             ),
-            array('ORDER' => array('PlayerInGame.player_id' => 'DESC'),)
+            1
         );
         // JUDGERINGAME
         $data[2] = $this->select('Judger', 
@@ -40,15 +40,15 @@ class gameModel extends model {
 
     public function get_player($para = array(), $where = array()) {
         // PLAYERINGAME
-        $data = $this->select('Player', 
-            array('[><]PlayerInGame'=> array('player_id' => 'player_id')),
+        $data = $this->select('PlayerInGame', 
+            array('[><]Player'=> array('player_id' => 'player_id')),
             array(
                 'PlayerInGame.game_id',
                 'Player.player_id',
                 'Player.name',
                 'Player.unit',
             ),
-            array('ORDER' => array('PlayerInGame.player_id' => 'DESC'),)
+            1
         );
         return $data;
     }
