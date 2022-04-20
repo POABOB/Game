@@ -498,7 +498,10 @@ class frontController extends \core\PPP {
 
       $database = new frontModel();
       $data = $database->score_confirm($post);
-      if($data == 3) {  
+
+      if($data == 4) {
+        json(new resModel(400, "操作發生錯誤，請稍後再試!"));
+      } else if($data == 3) {  
         json(new resModel(400, "Score_id有無效值!"));
       } else if($data == 2) {
         json(new resModel(400, "Score超過輪數!"));
