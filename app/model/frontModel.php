@@ -27,10 +27,50 @@ class frontModel extends model {
             $type = intval($data[0]['type']);
             foreach ($data[1] as $key => $value) {
                 $data[1][$key]['score'] = json_decode($data[1][$key]['score']);
+                
+                // 補空值
                 $score_nums = count($data[1][$key]['score']);
                 for($i = $score_nums + 1; $i <= $type; $i++) {
                     $data[1][$key]['score'][] = null;
                 }
+
+
+                if($data[1][$key]['score'][0] == null) {
+                    $data[1][$key]['highlight'][0] = 0;
+                    $data[1][$key]['highlight'][1] = 0;
+                } else if ($data[1][$key]['score'][1] != null && $data[1][$key]['score'][1] > $data[1][$key]['score'][0]) {
+                    $data[1][$key]['highlight'][0] = 0;
+                    $data[1][$key]['highlight'][1] = 1;
+                } else {
+                    $data[1][$key]['highlight'][0] = 1;
+                    $data[1][$key]['highlight'][1] = 0;
+                }
+
+                if($type == 7) {
+                    for($i = 3; $i <= $type; $i++) {
+                        if($data[1][$key]['score'][$i - 1] !== null) {
+                            $data[1][$key]['highlight'][$i - 1] = 1;
+                        } else {
+                            $data[1][$key]['highlight'][$i - 1] = 0;
+                        }
+                    }
+
+                    if($score_nums == 6) {
+                        $tmp = array_slice($data[1][$key]['score'], 2, 4);
+                        $min_key = array_search(min($tmp), $data[1][$key]['score']);
+                        $data[1][$key]['highlight'][$min_key] = 0;
+                    } else if($score_nums == 7) {
+                        $tmp = array_slice($data[1][$key]['score'], 2, 5);
+                        asort($tmp);
+                        $min_key = array_search($tmp[0], $data[1][$key]['score']);
+                        $data[1][$key]['highlight'][$min_key] = 0;
+
+                        $min_key = array_search($tmp[1], $data[1][$key]['score']);
+                        $data[1][$key]['highlight'][$min_key] = 0;
+                    }
+                }
+
+
                 $data[0]['rank'][] = $data[1][$key];
             }
             $data = $data[0];
