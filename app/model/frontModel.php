@@ -62,10 +62,10 @@ class frontModel extends model {
                     } else if($score_nums == 7) {
                         $tmp = array_slice($data[1][$key]['score'], 2, 5);
                         asort($tmp);
-                        $min_key = array_search($tmp[0], $data[1][$key]['score']);
+                        $min_key = array_search($tmp[4], $data[1][$key]['score']);
                         $data[1][$key]['highlight'][$min_key] = 0;
 
-                        $min_key = array_search($tmp[1], $data[1][$key]['score']);
+                        $min_key = array_search($tmp[3], $data[1][$key]['score']);
                         $data[1][$key]['highlight'][$min_key] = 0;
                     }
                 }
