@@ -57,6 +57,7 @@ $router->patch('/admin/player', 'playerController@update_');
 $router->delete('/admin/player', 'playerController@delete_');
 
 $router->get('/admin/game', 'gameController@index_');
+$router->get('/admin/game/history', 'gameController@index_history');
 $router->post('/admin/game', 'gameController@insert_');
 $router->patch('/admin/game', 'gameController@update_');
 $router->delete('/admin/game', 'gameController@delete_');

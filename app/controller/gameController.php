@@ -54,6 +54,12 @@ class gameController extends \core\PPP {
         json(new resModel(200, $data));
     }
 
+    public function index_history() {
+        $database = new gameModel();
+        $data = $database->get_game_history();
+        json(new resModel(200, $data));
+    }
+
     /**
      * @OA\Post(
      *     path="/api/admin/game", 

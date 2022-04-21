@@ -75,3 +75,10 @@ export function getGameJudger() {
     method: 'get'
   })
 }
+
+export function getGameHistory() {
+  return request({
+    url: '/admin/game/history',
+    method: 'get'
+  })
+}

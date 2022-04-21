@@ -169,4 +169,11 @@ class gameModel extends model {
     public function delete_game_judger($where = array(), $table = 'JudgerInGame') {
         return $this->delete($table,$where);
     }
+
+    public function get_game_history($para = array('game_id', 'name', 'type', 'content', 'date'), $where = array(), $table = 'Game') {
+        $where = array('ORDER' => array('game_id' => 'DESC'));
+        $data = $this->select($table, $para, $where);
+
+        return $data;
+    }
 }
