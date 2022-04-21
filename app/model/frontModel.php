@@ -57,15 +57,17 @@ class frontModel extends model {
 
                     if($score_nums == 6) {
                         $tmp = array_slice($data[1][$key]['score'], 2, 4);
+                        $tmp = array_values($tmp);
                         $min_key = array_search(min($tmp), $data[1][$key]['score']);
                         $data[1][$key]['highlight'][$min_key] = 0;
                     } else if($score_nums == 7) {
                         $tmp = array_slice($data[1][$key]['score'], 2, 5);
                         asort($tmp);
-                        $min_key = array_search($tmp[4], $data[1][$key]['score']);
+                        $tmp = array_values($tmp);
+                        $min_key = array_search($tmp[0], $data[1][$key]['score']);
                         $data[1][$key]['highlight'][$min_key] = 0;
 
-                        $min_key = array_search($tmp[3], $data[1][$key]['score']);
+                        $min_key = array_search($tmp[1], $data[1][$key]['score']);
                         $data[1][$key]['highlight'][$min_key] = 0;
                     }
                 }
@@ -236,7 +238,7 @@ class frontModel extends model {
                 if(intval($rank['type']) == 7) {
                     if(count($rank['score']) <= 5) {
                         foreach ($rank['score'] as $key => $value) {
-                            if($key <= 2) {
+                            if($key <= 1) {
                                 if(isset($rank['score'][1]) && $rank['score'][1] > $rank['score'][0]) {
                                     $totalScore = $rank['score'][1];
                                 } else {
@@ -248,7 +250,7 @@ class frontModel extends model {
                         }
                     } else if(count($rank['score']) == 6) {
                         foreach ($rank['score'] as $key => $value) {
-                            if($key <= 2) {
+                            if($key <= 1) {
                                 if(isset($rank['score'][1]) && $rank['score'][1] > $rank['score'][0]) {
                                     $totalScore = $rank['score'][1];
                                 } else {
@@ -259,10 +261,11 @@ class frontModel extends model {
                             }
                         }
                         $tmp = array_slice($rank['score'], -4);
+                        $tmp = array_values($tmp);
                         $totalScore -= min($tmp);
                     } else if(count($rank['score']) == 7) {
                         foreach ($rank['score'] as $key => $value) {
-                            if($key <= 2) {
+                            if($key <= 1) {
                                 if(isset($rank['score'][1]) && $rank['score'][1] > $rank['score'][0]) {
                                     $totalScore = $rank['score'][1];
                                 } else {
@@ -274,6 +277,7 @@ class frontModel extends model {
                         }
                         $tmp = array_slice($rank['score'], -5);
                         asort($tmp);
+                        $tmp = array_values($tmp);
                         $totalScore -= $tmp[0];
                         $totalScore -= $tmp[1];
                     }
