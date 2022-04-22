@@ -737,7 +737,7 @@ export default {
     InsertJudger(judger_id) {
       this.$confirm(`確定要新增到該比賽嗎？`)
         .then(() => {
-          if(this.JudgerInGame.length < 5) {
+          if (this.JudgerInGame.length < 5) {
             const form = {
               judger_id: judger_id,
               game_id: this.game.game_id

@@ -58,7 +58,7 @@ export const constantRoutes = [
   {
     path: '/',
     component: Layout,
-    redirect: '/',
+    redirect: '/home',
     children: [{
       path: 'home',
       name: '排行榜',
@@ -104,6 +104,18 @@ export const constantRoutes = [
       name: '比賽管理',
       component: () => import('@/views/game/index'),
       meta: { title: '比賽管理', icon: 'example' }
+    }]
+  },
+
+  {
+    path: '/history',
+    component: Layout,
+    redirect: '/history',
+    children: [{
+      path: 'history',
+      name: '歷史成績',
+      component: () => import('@/views/history/index'),
+      meta: { title: '歷史成績', icon: 'form' }
     }]
   },
 

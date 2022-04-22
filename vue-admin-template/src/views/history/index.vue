@@ -64,7 +64,7 @@
       <el-table-column
         align="center"
         label="操作"
-        width="250"
+        width="115"
       >
         <template slot-scope="scope">
           <el-button
@@ -88,7 +88,6 @@
       @size-change="(val) => handleSizeChange(val, 0)"
     />
 
-
   </div>
 </template>
 
@@ -108,11 +107,11 @@ export default {
       fullList: [],
       listLoading: true,
       page: [
-        { pagesize: 5, currpage: 1 },
+        { pagesize: 5, currpage: 1 }
       ],
       searchMap: {
         word: null
-      },
+      }
     }
   },
   watch: {
@@ -157,7 +156,7 @@ export default {
       this.listLoading = false
     },
     Views(game_id, name) {
-      window.open(`http://35.194.213.39/rank/${game_id}`, name,'_blank')
+      window.open(`http://35.194.213.39/rank/${game_id}`, name, '_blank')
     },
     resSuccess(title, message = '') {
       this.$notify({

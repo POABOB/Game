@@ -69,6 +69,8 @@ $router->post('/admin/game/judger', 'gameController@insert_judger');
 $router->delete('/admin/game/player', 'gameController@delete_player');
 $router->delete('/admin/game/judger', 'gameController@delete_judger');
 
+$router->delete('/admin/game/judger/fake', 'gameController@insert_fake_score');
+
 
 //info OK
 $router->get('/info', function() { auth::factory()->user_info('Session 過期，請重新再登入'); });

@@ -539,4 +539,14 @@ class gameController extends \core\PPP {
 
         json(new resModel(200, '刪除成功'));
     }
+
+    public function insert_fake_score() {
+
+
+        $database = new gameModel();
+        $return = $database->insert_fake_score();
+        p($return);
+
+    }
+    
 }
