@@ -48,7 +48,9 @@ class gameModel extends model {
                 'Player.name',
                 'Player.unit',
             ),
-            1
+            array(
+                'ORDER' => array('PlayerInGame.game_id' => 'ASC'),
+            )
         );
         return $data;
     }
