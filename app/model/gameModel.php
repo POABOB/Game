@@ -215,6 +215,7 @@ class gameModel extends model {
                 'PlayerInGame.game_id' => $d,
             )
         );
+        p(count($data[1]));
 
         // $data[3] = $distinct_game;
 
