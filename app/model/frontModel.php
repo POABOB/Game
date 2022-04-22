@@ -467,7 +467,7 @@ class frontModel extends model {
         $need_confirm = false;
         $int_round = intval($data[0]['round']);
 
-        
+        $round_above3 = 0;
         foreach ($data[4] as $key => $value) {
             $data[4][$key]['score'] = json_decode($data[4][$key]['score']);
             if($int_round == 1) {
@@ -483,8 +483,15 @@ class frontModel extends model {
                 if(!isset($data[4][$key]['score'][$int_round - 2])) {
                     $need_confirm = false;
                     break;
+                } else {
+                    $round_above3++;
                 }
             }
+        }
+
+
+        if(intval($data[4][0]['type']) == 7 && $int_round > 3 && $round_above3 >= 8) {
+            $need_confirm = false;
         }
 
         $data[0]['need_confirm'] = $need_confirm;
