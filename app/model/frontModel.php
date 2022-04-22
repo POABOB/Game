@@ -453,6 +453,12 @@ class frontModel extends model {
             )
         );
 
+        if(count($data[3]) !== 5) {
+            $data[0]['enable'] = false;
+        } else {
+            $data[0]['enable'] = true;
+        }
+
         // 判斷該輪是否可提交
         $data[4] = $this->select('Ranks', array('rank_id', 'score'), array('game_id' => $where['game_id'], 'hidden' => '0'));
 
@@ -497,7 +503,7 @@ class frontModel extends model {
                     $d = array_find(
                         $scores,
                         function($val) use ($data, $i) {
-                            return $val['judger_id'] == $data[3][$i - 1]['judger_id'];
+                            return $val['judger_id'] == isset($data[3][$i - 1]['judger_id']) ? $data[3][$i - 1]['judger_id'] : null;
                         }
                     );
                     if($d) {

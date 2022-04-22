@@ -609,6 +609,10 @@ export default {
         })
     },
     EditPlayer(game_id) {
+      // 分頁歸零
+      this.page[1].currpage = 1
+      this.page[2].currpage = 1
+
       // PLAYERNOTINGAME
       const game = this.fullList.find(d => parseInt(d.game_id) === parseInt(game_id))
       this.game.game_id = game.game_id
@@ -691,6 +695,8 @@ export default {
         })
     },
     EditJudger(game_id) {
+      this.page[3].currpage = 1
+      this.page[4].currpage = 1
       // JUDGERNOTINGAME
       const game = this.fullList.find(d => parseInt(d.game_id) === parseInt(game_id))
       this.game.game_id = game.game_id

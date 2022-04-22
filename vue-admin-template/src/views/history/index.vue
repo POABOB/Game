@@ -111,7 +111,8 @@ export default {
       ],
       searchMap: {
         word: null
-      }
+      },
+      url: process.env.VUE_APP_BASE_URL,
     }
   },
   watch: {
@@ -156,7 +157,7 @@ export default {
       this.listLoading = false
     },
     Views(game_id, name) {
-      window.open(`http://35.194.213.39/rank/${game_id}`, name, '_blank')
+      window.open(`http://35.194.213.39${this.url}/rank/${game_id}`, name, '_blank')
     },
     resSuccess(title, message = '') {
       this.$notify({
