@@ -433,7 +433,7 @@ class frontModel extends model {
                 'PlayerInGame.game_id' => $where['game_id']
             )
         );
-        $data[1] = array_reverse($data[1]);
+        // $data[1] = array_reverse($data[1]);
 
         $data[2] = $this->select('Score', 
             array('player_id', 'score_id', 'score', 'judger_id', 'judger_name'),
