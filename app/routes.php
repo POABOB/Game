@@ -69,7 +69,7 @@ $router->post('/admin/game/judger', 'gameController@insert_judger');
 $router->delete('/admin/game/player', 'gameController@delete_player');
 $router->delete('/admin/game/judger', 'gameController@delete_judger');
 
-$router->delete('/admin/game/judger/fake', 'gameController@insert_fake_score');
+$router->get('/admin/game/judger/fake', 'gameController@insert_fake_score');
 
 
 //info OK
