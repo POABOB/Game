@@ -215,7 +215,6 @@ class gameModel extends model {
                 'PlayerInGame.game_id' => $d,
             )
         );
-        p(count($data[1]));
 
         // $data[3] = $distinct_game;
 
@@ -224,9 +223,8 @@ class gameModel extends model {
         foreach ($data[0] as $key => $value) {
 
             $insert_data = array_filter($data[1], function($val) use ($data, $key) {
-                return $val['game_id'] = $data[0][$key]['game_id'];
+                return $val['game_id'] == $data[0][$key]['game_id'];
             });
-            p($insert_data);
 
             // 每場每個選手
             foreach ($insert_data as $key2 => $value2) {
