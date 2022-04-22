@@ -265,6 +265,8 @@ class gameModel extends model {
             }
         }
 
-        return $insert;
+        $this->insert('Score', $insert);
+
+        return true;
     }
 }
