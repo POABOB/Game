@@ -160,6 +160,7 @@ function array_find(array $array, callable $callback) {
             return $value;
         }
     }
+    return null;
 }
 
 function blob_etag($file) {
