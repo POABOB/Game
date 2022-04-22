@@ -182,11 +182,11 @@ class gameModel extends model {
             array('@game_id'),
             array('judger_id' => array(7,8))
         );
+
         $d = [];
         foreach ($distinct_game as $key => $value) {
             $d[] = $distinct_game[$key]['game_id'];
         }
-        p($d);exit();
 
         $data[0] = $this->select('JudgerInGame', 
             array(
@@ -212,11 +212,11 @@ class gameModel extends model {
                 'Player.name'
             ),
             array(
-                'PlayerInGame.game_id' => $distinct_game,
+                'PlayerInGame.game_id' => $d,
             )
         );
 
-        $data[3] = $distinct_game;
+        // $data[3] = $distinct_game;
 
         return $data;
     }
