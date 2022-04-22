@@ -467,7 +467,7 @@ class frontModel extends model {
         $need_confirm = false;
         $int_round = intval($data[0]['round']);
 
-        $data[1][$key]['scores'] = [];
+        
         foreach ($data[4] as $key => $value) {
             $data[4][$key]['score'] = json_decode($data[4][$key]['score']);
             if($int_round == 1) {
@@ -491,6 +491,7 @@ class frontModel extends model {
 
         // 整理資料
         foreach ($data[1] as $key => $value) {
+            $data[1][$key]['scores'] = [];
             $scores = array_filter(
                 $data[2],
                 function($val) use ($data, $key) {
