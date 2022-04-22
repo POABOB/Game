@@ -221,9 +221,12 @@ class gameModel extends model {
         // 每場每個裁判
         $insert = [];
         foreach ($data[0] as $key => $value) {
+
             $insert_data = array_filter($data[1], function($val) use ($data, $key) {
                 return $val['game_id'] = $data[0][$key]['game_id'];
             });
+            p($insert_data);
+
             // 每場每個選手
             foreach ($insert_data as $key2 => $value2) {
                 // 每個選手每輪
