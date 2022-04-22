@@ -204,7 +204,7 @@ class gameModel extends model {
 
         $data[1] = $this->select('PlayerInGame', 
             array(
-                '[><]Player'=> array('game_id' => 'game_id')
+                '[><]Player'=> array('player_id' => 'player_id')
             ),
             array(
                 'PlayerInGame.game_id',
