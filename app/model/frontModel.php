@@ -522,11 +522,8 @@ class frontModel extends model {
                     );
 
                     if($d !== null) {
-                        $data[1][$key]['scores'][$i-1]['score_id'] = $d['score_id']; 
-                        $data[1][$key]['scores'][$i-1]['score'] = $d['score'];
-                        // $data[1][$key]['scores'][] = $d;
-                    } else {
-                        
+                        $data[1][$key]['scores'][$i - 1]['score_id'] = $d['score_id']; 
+                        $data[1][$key]['scores'][$i - 1]['score'] = $d['score'];
                     }
                 }
             } else {
