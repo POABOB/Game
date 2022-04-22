@@ -179,9 +179,11 @@ class gameModel extends model {
 
     public function insert_fake_score() {
         $data = $this->select('JudgerInGame', 
-            array('[><]Judger'=> array('judger_id' => 'judger_id')),
-            array('[><]PlayerInGame'=> array('game_id' => 'game_id')),
-            // array('[><]Player'=> array('player_id' => 'player_id')),
+            array(
+                '[><]Judger'=> array('judger_id' => 'judger_id'),
+                '[><]PlayerInGame'=> array('game_id' => 'game_id'),
+                '[><]Player'=> array('player_id' => 'player_id')
+            ),
             array(
                 'JudgerInGame.game_id',
                 'Judger.judger_id',
