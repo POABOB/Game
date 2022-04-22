@@ -36,6 +36,11 @@
       </el-table-column>
       <el-table-column
         align="center"
+        prop="game_id"
+        label="比賽編號"
+      />
+      <el-table-column
+        align="center"
         prop="name"
         label="名稱"
       />
