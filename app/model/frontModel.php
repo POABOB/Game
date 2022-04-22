@@ -490,7 +490,7 @@ class frontModel extends model {
         }
 
 
-        if(intval($data[4][0]['type']) == 7 && $int_round > 2 && $round_above3 >= 8) {
+        if(intval($data[0]['type']) == 7 && $int_round > 2 && $round_above3 >= 8) {
             $need_confirm = false;
         }
 
