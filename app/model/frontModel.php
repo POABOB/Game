@@ -335,7 +335,7 @@ class frontModel extends model {
                 'Player.comment', 
             ),
             array(
-                'ORDER' => array('PlayerInGame.game_id' => 'ASC'),
+                'ORDER' => array('PlayerInGame.player_id' => 'ASC'),
                 'PlayerInGame.game_id' => $where['game_id']
             )
         );
@@ -429,7 +429,7 @@ class frontModel extends model {
                 'Player.comment', 
             ),
             array(
-                // 'ORDER' => array('Player.player_id' => 'ASC'),
+                'ORDER' => array('Player.player_id' => 'ASC'),
                 'PlayerInGame.game_id' => $where['game_id']
             )
         );
