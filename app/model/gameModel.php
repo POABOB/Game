@@ -219,7 +219,7 @@ class gameModel extends model {
         // $data[3] = $distinct_game;
 
         // 每場每個裁判
-        $insert = []
+        $insert = [];
         foreach ($data[0] as $key => $value) {
             $insert_data = array_filter($data[1], function($val) use ($data, $key) {
                 return $val['game_id'] = $data[0][$key]['game_id'];
