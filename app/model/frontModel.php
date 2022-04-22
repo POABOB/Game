@@ -513,8 +513,8 @@ class frontModel extends model {
                             'player_id' => $data[1][$key]['player_id'], 
                             'score_id' => 0, 
                             'score' => 0, 
-                            'judger_id' => $data[3][$i - 1]['judger_id'], 
-                            'judger_name' => $data[3][$i - 1]['name']
+                            'judger_id' => isset($data[3][$i - 1]['judger_id']) ? $data[3][$i - 1]['judger_id'] : 0, 
+                            'judger_name' => isset($data[3][$i - 1]['name']) ? $data[3][$i - 1]['name'] : ''
                         );
                     }
                 }
