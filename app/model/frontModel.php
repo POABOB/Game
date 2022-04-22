@@ -513,7 +513,7 @@ class frontModel extends model {
                         'judger_name' => isset($data[3][$i - 1]['name']) ? $data[3][$i - 1]['name'] : ''
                     );
 
-
+                    $d = null;
                     $d = array_find(
                         $scores,
                         function($val) use ($data, $i) {
