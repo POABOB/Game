@@ -16,9 +16,7 @@ class gameModel extends model {
                 'Player.name',
                 'Player.unit',
             ),
-            array(
-                'ORDER' => array('PlayerInGame.game_id' => 'ASC'),
-            )
+            1
         );
         // JUDGERINGAME
         $data[2] = $this->select('Judger', 
@@ -50,9 +48,7 @@ class gameModel extends model {
                 'Player.name',
                 'Player.unit',
             ),
-            array(
-                'ORDER' => array('PlayerInGame.game_id' => 'ASC'),
-            )
+            1
         );
         return $data;
     }
