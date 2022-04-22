@@ -218,6 +218,51 @@ class gameModel extends model {
 
         // $data[3] = $distinct_game;
 
-        return $data;
+        // 每場每個裁判
+        $insert = []
+        foreach ($data[0] as $key => $value) {
+            $insert_data = array_filter($data[1], function($val) use ($data, $key) {
+                return $val['game_id'] = $data[0][$key]['game_id'];
+            });
+            // 每場每個選手
+            foreach ($insert_data as $key2 => $value2) {
+                // 每個選手每輪
+                for($i = 1; $i <= intval($data[0][$key]['type']); $i++) {
+                    if(
+                        !$this->has('Score', 
+                        array(
+                            'game_id' => $insert_data[$key2]['game_id'],
+                            'player_id' => $insert_data[$key2]['player_id'],
+                            'judger_id' => $data[0][$key]['judger_id'],
+                        ))
+                    ) {
+                        if($data[0][$key]['judger_id'] == 7) {
+                            $insert[] = array(
+                                'game_id' => $insert_data[$key2]['game_id'],
+                                'player_id' => $insert_data[$key2]['player_id'],
+                                'player_name' => $insert_data[$key2]['name'],
+                                'judger_id' => $data[0][$key]['judger_id'],
+                                'judger_name' => $data[0][$key]['name'],
+                                'round' => (string)$i,
+                                'score' => 100.00
+                            );
+                        } else {
+                            $insert[] = array(
+                                'game_id' => $insert_data[$key2]['game_id'],
+                                'player_id' => $insert_data[$key2]['player_id'],
+                                'player_name' => $insert_data[$key2]['name'],
+                                'judger_id' => $data[0][$key]['judger_id'],
+                                'judger_name' => $data[0][$key]['name'],
+                                'round' => (string)$i,
+                                'score' => 0.00
+                            );
+                        }
+
+                    }
+                }
+            }
+        }
+
+        return $insert;
     }
 }
