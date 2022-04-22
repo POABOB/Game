@@ -182,6 +182,7 @@ class gameModel extends model {
             array('@game_id'),
             array('judger_id' => array(7,8))
         );
+        p($distinct_game);exit();
 
         $data[0] = $this->select('JudgerInGame', 
             array(
