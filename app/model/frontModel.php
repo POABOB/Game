@@ -517,7 +517,7 @@ class frontModel extends model {
                     $d = array_find(
                         $scores,
                         function($val) use ($data, $i) {
-                            return $val['judger_id'] == isset($data[3][$i - 1]['judger_id']) ? $data[3][$i - 1]['judger_id'] : -1;
+                            return $val['judger_id'] == (isset($data[3][$i - 1]['judger_id']) ? $data[3][$i - 1]['judger_id'] : -1);
                         }
                     );
 
