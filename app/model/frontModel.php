@@ -466,6 +466,8 @@ class frontModel extends model {
 
         $need_confirm = false;
         $int_round = intval($data[0]['round']);
+
+        $data[1][$key]['scores'] = [];
         foreach ($data[4] as $key => $value) {
             $data[4][$key]['score'] = json_decode($data[4][$key]['score']);
             if($int_round == 1) {
@@ -508,7 +510,8 @@ class frontModel extends model {
                             return $val['judger_id'] == isset($data[3][$i - 1]['judger_id']) ? $data[3][$i - 1]['judger_id'] : -1;
                         }
                     );
-                    if($d !== null) {
+
+                    if($d !== null && !in_array($d, $data[1][$key]['scores'])) {
                         $data[1][$key]['scores'][] = $d;
                     } else {
                         $data[1][$key]['scores'][] = array(
