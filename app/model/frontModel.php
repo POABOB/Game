@@ -505,6 +505,15 @@ class frontModel extends model {
                 $data[1][$key]['confirm'] = 0;
                 $scores = array_values($scores);
                 for($i = 1; $i <= 5; $i++) {
+                    $data[1][$key]['scores'][] = array(
+                        'player_id' => $data[1][$key]['player_id'], 
+                        'score_id' => 0, 
+                        'score' => 0, 
+                        'judger_id' => isset($data[3][$i - 1]['judger_id']) ? $data[3][$i - 1]['judger_id'] : 0, 
+                        'judger_name' => isset($data[3][$i - 1]['name']) ? $data[3][$i - 1]['name'] : ''
+                    );
+
+
                     $d = array_find(
                         $scores,
                         function($val) use ($data, $i) {
@@ -512,16 +521,12 @@ class frontModel extends model {
                         }
                     );
 
-                    if($d !== null && !in_array($d, $data[1][$key]['scores'])) {
-                        $data[1][$key]['scores'][] = $d;
+                    if($d !== null) {
+                        $data[1][$key]['scores']['score_id'] = $d['score_id']; 
+                        $data[1][$key]['scores']['score'] = $d['score'];
+                        // $data[1][$key]['scores'][] = $d;
                     } else {
-                        $data[1][$key]['scores'][] = array(
-                            'player_id' => $data[1][$key]['player_id'], 
-                            'score_id' => 0, 
-                            'score' => 0, 
-                            'judger_id' => isset($data[3][$i - 1]['judger_id']) ? $data[3][$i - 1]['judger_id'] : 0, 
-                            'judger_name' => isset($data[3][$i - 1]['name']) ? $data[3][$i - 1]['name'] : ''
-                        );
+                        
                     }
                 }
             } else {
