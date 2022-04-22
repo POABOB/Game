@@ -508,7 +508,7 @@ class frontModel extends model {
                             return $val['judger_id'] == isset($data[3][$i - 1]['judger_id']) ? $data[3][$i - 1]['judger_id'] : -1;
                         }
                     );
-                    if($d !== null && !in_array($d, $data[1][$key]['scores'])) {
+                    if($d !== null) {
                         $data[1][$key]['scores'][] = $d;
                     } else {
                         $data[1][$key]['scores'][] = array(
