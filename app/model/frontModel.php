@@ -21,7 +21,7 @@ class frontModel extends model {
             $where = array(
                 'game_id' => $game_id,
                 'hidden' => '0',
-                'ORDER' => array('rank_id' => 'DESC')
+                'ORDER' => array('rank_id' => 'ASC')
             );
             // 獲取該比賽排行
             $data[1] = $this->select($table, $para, $where);
