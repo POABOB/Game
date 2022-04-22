@@ -482,7 +482,7 @@ class frontModel extends model {
 
                 if(!isset($data[4][$key]['score'][$int_round - 2])) {
                     $need_confirm = false;
-                    break;
+                    // break;
                 } else {
                     $round_above3++;
                 }
