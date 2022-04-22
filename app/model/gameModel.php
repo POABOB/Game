@@ -178,23 +178,40 @@ class gameModel extends model {
     }
 
     public function insert_fake_score() {
-        $data = $this->select('JudgerInGame', 
+        $distinct_game = $this->select('JudgerInGame', 
+            array('@game_id'),
+            array('judger_id' => array(7,8))
+        );
+
+        $data[0] = $this->select('JudgerInGame', 
             array(
                 '[><]Judger'=> array('judger_id' => 'judger_id'),
-                '[><]PlayerInGame'=> array('game_id' => 'game_id'),
-                // '[><]Player'=> array('player_id' => 'player_id')
+                '[><]Game'=> array('game_id' => 'game_id'),
             ),
             array(
                 'JudgerInGame.game_id',
                 'Judger.judger_id',
                 'Judger.name',
+                'Game.type',
+            ),
+            array('JudgerInGame.judger_id' => array(7,8))
+        );
+
+        $data[1] = $this->select('PlayerInGame', 
+            array(
+                '[><]Player'=> array('game_id' => 'game_id')
+            ),
+            array(
+                'PlayerInGame.game_id',
                 'Player.player_id',
                 'Player.name'
             ),
             array(
-                'JudgerInGame.judger_id' => array(7,8),
+                'PlayerInGame.game_id' => $distinct_game,
             )
         );
+
+        $data[3] = $distinct_game;
 
         return $data;
     }
