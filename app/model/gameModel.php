@@ -182,7 +182,7 @@ class gameModel extends model {
             array(
                 '[><]Judger'=> array('judger_id' => 'judger_id'),
                 '[><]PlayerInGame'=> array('game_id' => 'game_id'),
-                '[><]Player'=> array('player_id' => 'player_id')
+                // '[><]Player'=> array('player_id' => 'player_id')
             ),
             array(
                 'JudgerInGame.game_id',
