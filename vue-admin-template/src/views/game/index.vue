@@ -172,7 +172,21 @@
     <!-- PlayerForm -->
     <el-dialog title="選手管理" :visible.sync="dialogFormVisible[1].B" top="2vh">
       <h3>比賽名稱：{{ game.name }}，比賽編號：{{ game.game_id }}</h3>
-      <h3>已加入選手</h3>
+      <el-row :gutter="20">
+        <el-col>
+        </el-col>
+        <el-col>
+          <el-form :inline="true" class="demo-form-inline">
+            <el-form-item label="已加入選手">
+              <el-input v-model="searchMap.PlayerInGame" placeholder="名稱 單位..." />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" icon="el-icon-search" @click="SearchPlayerInGame">查詢</el-button>
+            </el-form-item>
+          </el-form>
+
+        </el-col>
+      </el-row>
       <el-table
         :data="PlayerInGame.slice((page[1].currpage - 1) * page[1].pagesize, page[1].currpage * page[1].pagesize)"
         element-loading-text="Loading"
@@ -227,7 +241,21 @@
         @size-change="(val) => handleSizeChange(val, 1)"
       />
       <el-divider />
-      <h3>未加入選手</h3>
+      <el-row :gutter="20">
+        <el-col>
+        </el-col>
+        <el-col>
+          <el-form :inline="true" class="demo-form-inline">
+            <el-form-item label="未加入選手">
+              <el-input v-model="searchMap.PlayerNotInGame" placeholder="名稱 單位..." />
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" icon="el-icon-search" @click="SearchPlayerNotInGame">查詢</el-button>
+            </el-form-item>
+          </el-form>
+
+        </el-col>
+      </el-row>
       <el-table
         :data="PlayerNotInGame.slice((page[2].currpage - 1) * page[2].pagesize, page[2].currpage * page[2].pagesize)"
         element-loading-text="Loading"
@@ -447,7 +475,9 @@ export default {
         { pagesize: 5, currpage: 1 }
       ],
       searchMap: {
-        word: null
+        word: null,
+        PlayerInGame: null,
+        PlayerNotInGame: null
       },
       form: {
         game_id: '',
@@ -480,6 +510,20 @@ export default {
       handler: function() {
         if (this.searchMap.word === '' || this.searchMap.word === null) {
           this.Search()
+        }
+      }
+    },
+    'searchMap.PlayerInGame': {
+      handler: function() {
+        if (this.searchMap.PlayerInGame === '' || this.searchMap.PlayerInGame === null) {
+          this.SearchPlayerInGame()
+        }
+      }
+    },
+    'searchMap.PlayerNotInGame': {
+      handler: function() {
+        if (this.searchMap.PlayerNotInGame === '' || this.searchMap.PlayerNotInGame === null) {
+          this.SearchPlayerNotInGame()
         }
       }
     }
@@ -527,6 +571,24 @@ export default {
         this.list = this.fullList
       }
       this.listLoading = false
+    },
+    SearchPlayerNotInGame() {
+      // 分頁歸零
+      this.page[2].currpage = 1
+      if (this.searchMap.PlayerNotInGame !== null) {
+        this.PlayerNotInGame = this.FullPlayerNotInGame.filter(array => array.name.match(this.searchMap.PlayerNotInGame) || array.unit.match(this.searchMap.PlayerNotInGame))
+      } else {
+        this.PlayerNotInGame = this.FullPlayerNotInGame
+      }
+    },
+    SearchPlayerInGame() {
+      // 分頁歸零
+      this.page[1].currpage = 1
+      if (this.searchMap.PlayerInGame !== null) {
+        this.PlayerInGame = this.FullPlayerInGame.filter(array => parseInt(array.game_id) === parseInt(this.game.game_id) && (array.name.match(this.searchMap.PlayerInGame) || array.unit.match(this.searchMap.PlayerInGame)))
+      } else {
+        this.PlayerInGame = this.FullPlayerInGame.filter(array => parseInt(array.game_id) === parseInt(this.game.game_id))
+      }
     },
     Switch(index = 0) {
       if (this.dialogFormVisible[index].B) {
@@ -631,10 +693,12 @@ export default {
 
           if (_in === undefined) {
             this.PlayerNotInGame.push(item)
+            this.FullPlayerNotInGame.push(item)
           }
         })
       } else {
         this.PlayerNotInGame = JSON.parse(JSON.stringify(this.Player))
+        this.FullPlayerNotInGame = JSON.parse(JSON.stringify(this.Player))
       }
       this.Switch(1)
     },
@@ -651,10 +715,12 @@ export default {
               const _in = this.PlayerInGame.find(d => parseInt(d.player_id) === parseInt(item.player_id))
               if (_in === undefined) {
                 this.PlayerNotInGame.push(item)
+                this.FullPlayerNotInGame.push(item)
               }
             })
           } else {
             this.PlayerNotInGame = JSON.parse(JSON.stringify(this.Player))
+            this.FullPlayerNotInGame = JSON.parse(JSON.stringify(this.Player))
           }
         } else {
           this.resError(res.message)

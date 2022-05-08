@@ -108,7 +108,7 @@ class playerController extends \core\PPP {
         if($data) {
             json(new resModel(200, '新增成功'));
         } else if($return == 0) {
-            json(new resModel(400, '新增失敗'));
+            json(new resModel(400, '新增失敗，選手名字和單位相同'));
         }
     }
 

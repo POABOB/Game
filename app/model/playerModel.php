@@ -10,7 +10,11 @@ class playerModel extends model {
     }
 
     public function insert_player($para = array(), $table = 'Player') {
-        return $this->insert($table,$para);
+        if($this->has($table, array('name' => $para['name'], 'unit' => $para['unit'], 'hidden' => '0'))) {
+            return 0;
+        } else {
+            return $this->insert($table,$para);
+        }
     }
 
     public function update_player($para = array(), $where = array(), $table = 'Player') {

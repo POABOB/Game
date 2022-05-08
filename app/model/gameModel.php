@@ -156,10 +156,7 @@ class gameModel extends model {
         $this->delete($table,$where);
 
         // 刪除Ranks
-        $this->update('Ranks',
-            array('hidden' => '1'),
-            $where
-        );
+        $this->delete('Ranks', $where);
 
         $this->pdo->commit(); 
         return 0;

@@ -20,7 +20,7 @@ class frontModel extends model {
 
             $where = array(
                 'game_id' => $game_id,
-                'hidden' => '0',
+                // 'hidden' => '0',
                 'ORDER' => array('rank_id' => 'ASC')
             );
             // 獲取該比賽排行
@@ -335,7 +335,7 @@ class frontModel extends model {
                 'Player.comment', 
             ),
             array(
-                'ORDER' => array('PlayerInGame.player_id' => 'ASC'),
+                'ORDER' => array('PlayerInGame.PIG_id' => 'ASC'),
                 'PlayerInGame.game_id' => $where['game_id']
             )
         );
@@ -429,7 +429,7 @@ class frontModel extends model {
                 'Player.comment', 
             ),
             array(
-                'ORDER' => array('Player.player_id' => 'ASC'),
+                'ORDER' => array('Player.PIG_id' => 'ASC'),
                 'PlayerInGame.game_id' => $where['game_id']
             )
         );
