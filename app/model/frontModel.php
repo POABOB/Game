@@ -349,7 +349,8 @@ class frontModel extends model {
                 $this->update($table2,
                     array(
                         'score' => $rank['score'],
-                        'totalScore' => $totalScore
+                        'totalScore' => $totalScore,
+                        'last_updated' => date('Y-m-d H:i:s')
                     ),
                     array('rank_id ' => $rank['rank_id'])
                 );
