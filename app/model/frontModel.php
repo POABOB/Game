@@ -75,7 +75,62 @@ class frontModel extends model {
 
                 $data[0]['rank'][] = $data[1][$key];
             }
+
+            // 獲取最近更新的rank
+            $para[] = 'last_updated';
+            $last_rank = $this->get($table, $para, array(
+                'game_id' => $game_id,
+                'last_updated[!]' => null,
+                'ORDER' => array('last_updated' => 'DESC')
+            ));
+            if($last_rank !== null) {
+                $last_rank['score'] = json_decode($last_rank['score']);
+                
+                // 補空值
+                $score_nums = count($last_rank['score']);
+                for($i = $score_nums + 1; $i <= $type; $i++) {
+                    $last_rank['score'][] = null;
+                }
+
+
+                if($last_rank['score'][0] == null) {
+                    $last_rank['highlight'][0] = 0;
+                    $last_rank['highlight'][1] = 0;
+                } else if ($last_rank['score'][1] != null && $last_rank['score'][1] > $last_rank['score'][0]) {
+                    $last_rank['highlight'][0] = 0;
+                    $last_rank['highlight'][1] = 1;
+                } else {
+                    $last_rank['highlight'][0] = 1;
+                    $last_rank['highlight'][1] = 0;
+                }
+
+                if($type == 7) {
+                    for($i = 3; $i <= $type; $i++) {
+                        if($last_rank['score'][$i - 1] !== null) {
+                            $last_rank['highlight'][$i - 1] = 1;
+                        } else {
+                            $last_rank['highlight'][$i - 1] = 0;
+                        }
+                    }
+
+                    if($score_nums == 6) {
+                        $tmp = array_slice($last_rank['score'], 2, 4);
+                        $min_key = array_search(min($tmp), $last_rank['score']);
+                        $last_rank['highlight'][$min_key] = 0;
+                    } else if($score_nums == 7) {
+                        $tmp = array_slice($last_rank['score'], 2, 5);
+                        asort($tmp);
+                        $tmp = array_values($tmp);
+                        $min_key = array_search($tmp[0], $last_rank['score']);
+                        $last_rank['highlight'][$min_key] = 0;
+
+                        $min_key = array_search($tmp[1], $last_rank['score']);
+                        $last_rank['highlight'][$min_key] = 0;
+                    }
+                }
+            }
             $data = $data[0];
+            $data['last_rank'] = $last_rank;
         } else {
             $data = null;
         }
