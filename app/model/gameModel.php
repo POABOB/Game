@@ -96,8 +96,8 @@ class gameModel extends model {
     // 插入比賽選手，並新增空的Rank
     public function insert_game_player($para = array(), $table = 'PlayerInGame') {
         $type = $this->get('Game', 'type', array('game_id' => $para['game_id']));
-        $name = $this->get('Player', 'name', array('player_id' => $para['player_id']));
-        if(!$type || !$name) {
+        $data = $this->get('Player', array('name', 'unit'), array('player_id' => $para['player_id']));
+        if(!$type || !$data) {
             // 避免插入不存在的外鍵
             return 2;
         } else if($this->has($table, $para)) {
@@ -114,7 +114,8 @@ class gameModel extends model {
                 'type' => $type,
                 'game_id' => $para['game_id'],
                 'player_id' => $para['player_id'],
-                'name' => $name,
+                'name' => $data['name'],
+                'unit' => $data['unit'],
                 'TotalScore' => 0
             );
             if($this->has('Ranks', array('game_id' => $para['game_id'], 'player_id' => $para['player_id']))) {

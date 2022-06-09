@@ -5,7 +5,7 @@ use core\lib\model;
 class frontModel extends model {
     
     // rank_list() START
-    public function get_rank_list($where = array(), $para = array('score', 'player_id', 'name', 'TotalScore'), $table = 'Ranks') {
+    public function get_rank_list($where = array(), $para = array('score', 'player_id', 'name', 'TotalScore', 'unit'), $table = 'Ranks') {
         if(count($where) == 0) {
             // 獲取當前RankStatus
             $game_id = $this->get('RankStatus', 'game_id', array('RS_id' => 1));

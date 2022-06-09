@@ -38,6 +38,7 @@ class frontController extends \core\PPP {
      *                              @OA\Property(property="name", type="string(128)", example="王小明"),
      *                              @OA\Property(property="score", type="int", example="[7,6,5,2,1,8,8]"),
      *                              @OA\Property(property="totalScore", type="tinyint(3)", example="28"),
+     *                              @OA\Property(property="unit", type="string(128)", example="台中一中"),
      *                          )
      *                      ),
      *                      @OA\Property(property="last_rank", type="object",
@@ -45,6 +46,7 @@ class frontController extends \core\PPP {
      *                          @OA\Property(property="name", type="string(128)", example="王小明"),
      *                          @OA\Property(property="score", type="int", example="[7,6,5,2,1,8,8]"),
      *                          @OA\Property(property="totalScore", type="tinyint(3)", example="28"),
+     *                          @OA\Property(property="unit", type="string(128)", example="台中一中"),
      *                          @OA\Property(property="last_updated", type="string(20)", example="2022-05-26 17:55:00"),
      *                      ),
      *              ),
@@ -86,6 +88,7 @@ class frontController extends \core\PPP {
      *                              @OA\Property(property="name", type="string(128)", example="王小明"),
      *                              @OA\Property(property="score", type="int", example="[7,6,5,2,1,8,8]"),
      *                              @OA\Property(property="totalScore", type="tinyint(3)", example="28"),
+     *                              @OA\Property(property="unit", type="string(128)", example="台中一中"),
      *                          )
      *                      ),
      *                      @OA\Property(property="last_rank", type="object",
@@ -93,6 +96,7 @@ class frontController extends \core\PPP {
      *                          @OA\Property(property="name", type="string(128)", example="王小明"),
      *                          @OA\Property(property="score", type="int", example="[7,6,5,2,1,8,8]"),
      *                          @OA\Property(property="totalScore", type="tinyint(3)", example="28"),
+     *                          @OA\Property(property="unit", type="string(128)", example="台中一中"),
      *                          @OA\Property(property="last_updated", type="string(20)", example="2022-05-26 17:55:00"),
      *                      ),
      *              ),
