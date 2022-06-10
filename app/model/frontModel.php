@@ -485,7 +485,7 @@ class frontModel extends model {
                 'Player.comment', 
             ),
             array(
-                'ORDER' => array('Player.PIG_id' => 'ASC'),
+                'ORDER' => array('PlayerInGame.PIG_id' => 'ASC'),
                 'PlayerInGame.game_id' => $where['game_id']
             )
         );
